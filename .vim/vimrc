@@ -1,0 +1,195 @@
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => General
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Sets how many lines of history VIM has to remember
+" set history=700
+
+" Disable filetype plugin just prior to invoking pathogen
+filetype plugin off " Just to be sure we reset everything
+
+" Activate pathogen to enable bundles in ~/.vim/bundle/
+call pathogen#runtime_append_all_bundles() 
+
+" It's now ok to activate filetype plugin
+filetype plugin indent on
+
+" Set up statusline
+set laststatus=2   " always display statusline
+set statusline=%F\ %m\ %{fugitive#statusline()}\ %y%=%l,%c\ %P
+
+" Set to auto read when a file is changed from the outside
+set autoread
+
+" With a map leader it's possible to do extra key combinations
+" like <leader>w saves the current file
+let mapleader = ","
+let g:mapleader = ","
+
+" Fast saving
+" nmap <leader>w :w!<cr>
+
+" Fast editing of the .vimrc
+map <leader>e :e! ~/.vimrc<cr>
+
+" When vimrc is edited, reload it
+autocmd! bufwritepost vimrc source ~/.vimrc
+
+" Toggle auto-indent for pasting into the editor
+set pastetoggle=<F2>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => VIM user interface
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Set 7 lines to the curors - when moving vertical..
+" set so=7
+
+" set wildmenu "Turn on WiLd menu
+"
+set nocompatible  " Don't bother with vi compatibility
+set ruler         " Always show current position
+set number        " Always show line numbers
+set cursorcolumn  " Highlight column cursor is in
+set cursorline    " Hightlight line cursor is on
+
+" set cmdheight=2 "The commandbar height
+
+set hid "Change buffer - without saving
+
+" Set backspace config
+set backspace=eol,start,indent
+set whichwrap+=<,>,h,l
+
+" set ignorecase  " Ignore case when searching
+" set smartcase
+
+set hlsearch      " Highlight search things
+
+set incsearch     " Make search act like search in modern browsers
+set nolazyredraw  " Don't redraw while executing macros 
+
+set magic         " Set magic on, for regular expressions
+
+set showmatch     " Show matching bracets when text indicator is over them
+set mat=2         " How many tenths of a second to blink
+
+" No sound on errors
+" set noerrorbells
+" set novisualbell
+" set t_vb=
+" set tm=500
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Colors and Fonts
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+syntax enable     " Enable syntax hl
+
+if has("gui_running")
+  set guioptions-=T
+  set t_Co=256
+  set background=dark
+  colorscheme torte
+  set nonu
+else
+  set t_Co=256
+  set background=light
+  colorscheme summerfruit256
+  " colorscheme khaki
+
+  " set nonu
+endif
+
+" Solarized Colorscheme
+set background=dark
+let g:solarized_termtrans=1
+let g:solarized_termcolors=256
+let g:solarized_contrast="high"
+let g:solarized_visibility="high"
+
+colorscheme solarized
+
+
+"set encoding=utf8
+"try
+"    lang en_US
+"catch
+"endtry
+
+" set ffs=unix,dos,mac "Default file types
+
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Text, tab and indent related
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set expandtab
+set shiftwidth=2
+set tabstop=2
+set smarttab
+
+set lbr
+set tw=500
+
+set ai   " Auto indent
+set si   " Smart indent
+set textwidth=80
+set wrap " Wrap lines
+set linebreak
+" Have to use Unicode value so that wrapped lines can be distinguished.
+" List of Unicode symbols available at:
+" http://www.fileformat.info/info/unicode/utf8test.htm
+" Currently using, via C-vuXXXX: 21b3
+set showbreak=\ \ \ ↳
+"set listchars=eol:¬,tab:▸\ 
+"set listchars=tab:▸\ 
+set listchars=tab:»·,trail:·,eol:¬
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Filetype specific items
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if has("autocmd")
+  " Syntax of languages that care about having tabs vs spaces
+  autocmd FileType make setlocal tabstop=2 softtabstop=2 shiftwidth=2 noexpandtab
+  autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+
+  " Personal preferences
+  autocmd Filetype html       setlocal ts=2 sts=2 sw=2 expandtab
+  autocmd Filetype css        setlocal ts=2 sts=2 sw=2 expandtab
+  autocmd Filetype javascript setlocal ts=2 sts=2 sw=2 expandtab
+  autocmd Filetype perl       setlocal ts=2 sts=2 sw=2 expandtab
+endif
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin specific definitions
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Perl Support
+let g:Perl_MapLeader = ","
+" Man page Reader
+source $VIMRUNTIME/ftplugin/man.vim
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => General Key Mappings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Display any embedded control characters - handy for cleanly indenting
+" HERE docs so they look pretty too
+nmap <leader>L :set list!<CR> " toggle invisible chars
+nmap <leader>N :set number!<CR>
+" Toggle Show Marks - but leave them off by default
+let g:showmarks_enable=0
+nmap <leader>Mo :ShowMarksToggle<CR> " toggle Show Marks
+" Toggle Gundo
+nnoremap <F5> :GundoToggle<CR>
+
+" ========================================================================
+" Startup
+" ========================================================================
+" Open NERDTree on start
+" autocmd VimEnter * exe 'NERDTree' | wincmd l
+" Allow the NERDTree to be toggled by Ctrl-T:
+nnoremap <silent> <C-t> :NERDTreeToggle<CR>
+" Allow taglist to be toggled by Ctrl-A:
+nnoremap <silent> <C-a> :TlistToggle<CR>
+
