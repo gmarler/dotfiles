@@ -45,8 +45,8 @@ nnoremap ; :                      " ?????
 " Disable filetype plugin just prior to invoking pathogen
 filetype plugin off " Just to be sure we reset everything
 
-" Activate pathogen to enable bundles in ~/.vim/bundle/
-call pathogen#runtime_append_all_bundles() 
+" Activate pathogen
+call pathogen#infect() 
 
 " It's now ok to activate filetype plugin
 filetype on
