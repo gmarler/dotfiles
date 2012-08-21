@@ -2,8 +2,45 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set nocompatible " Don't bother with vi compatibility
+" Set backspace config - allow backspacing over everything in insert mode
+set backspace=eol,start,indent
+set whichwrap+=<,>,h,l  " ??? how does this work?
+set autoindent                    " Always set autoindenting on
+set copyindent
+set smartindent                   " Smart indent
+set shiftwidth=2                  " # of spaces for autoindening
+set shiftround                    " use multiple of shiftwidth when indenting with '<' and ':
+set showmatch                     " Show matching bracets when text indicator is over them
+set ignorecase                    " ignore case when searching
+set smartcase                     " ignore case if search pattern is all lowercase, case-sensitive otherwise
+set hlsearch                      " highlight search terms
+set incsearch                     " show search matches as you type
+
+" When searching, will wrap from bottom of buffer to top when going to next match
+set wrapscan
+
 " Sets how many lines of history VIM has to remember
-" set history=700
+set history=1000
+set undolevels=1000
+
+" Use spaces, rather than <TAB>, for indenting
+set expandtab
+set tabstop=2
+set smarttab                      " ????
+
+set ruler                         " Always show current position
+set number                        " Always show line numbers
+set cursorcolumn                  " Highlight column cursor is in
+set cursorline                    " Highlight line cursor is on
+
+set title
+set nobackup
+set swapfile
+" Toggle auto-indent for pasting into the editor
+set pastetoggle=<F2>
+
+nnoremap ; :                      " ?????
 
 " Disable filetype plugin just prior to invoking pathogen
 filetype plugin off " Just to be sure we reset everything
@@ -12,7 +49,9 @@ filetype plugin off " Just to be sure we reset everything
 call pathogen#runtime_append_all_bundles() 
 
 " It's now ok to activate filetype plugin
-filetype plugin indent on
+filetype on
+filetype plugin on
+filetype indent on
 
 " Set up statusline
 set laststatus=2   " always display statusline
@@ -35,42 +74,22 @@ map <leader>e :e! ~/.vimrc<cr>
 " When vimrc is edited, reload it
 autocmd! bufwritepost vimrc source ~/.vimrc
 
-" Toggle auto-indent for pasting into the editor
-set pastetoggle=<F2>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Set 7 lines to the curors - when moving vertical..
-" set so=7
 
 " set wildmenu "Turn on WiLd menu
 "
-set nocompatible  " Don't bother with vi compatibility
-set ruler         " Always show current position
-set number        " Always show line numbers
-set cursorcolumn  " Highlight column cursor is in
-set cursorline    " Hightlight line cursor is on
+" Files to ignore for Command-T / other listings
+set wildignore+=*.o,*.obj,.git,public/stylesheets/**,public/cache/**
+
 
 " set cmdheight=2 "The commandbar height
 
-set hid "Change buffer - without saving
-
-" Set backspace config
-set backspace=eol,start,indent
-set whichwrap+=<,>,h,l
-
-" set ignorecase  " Ignore case when searching
-" set smartcase
-
-set hlsearch      " Highlight search things
-
-set incsearch     " Make search act like search in modern browsers
-set nolazyredraw  " Don't redraw while executing macros 
-
+set nohidden      " 
+set lazyredraw    " Don't redraw while executing macros 
 set magic         " Set magic on, for regular expressions
-
-set showmatch     " Show matching bracets when text indicator is over them
 set mat=2         " How many tenths of a second to blink
 
 " No sound on errors
@@ -78,6 +97,10 @@ set mat=2         " How many tenths of a second to blink
 " set novisualbell
 " set t_vb=
 " set tm=500
+
+" Highlight trailing/leading whitespace
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+\%#\@<!$/
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -108,34 +131,15 @@ let g:solarized_contrast="high"
 let g:solarized_visibility="high"
 
 colorscheme solarized
-
-
-"set encoding=utf8
-"try
-"    lang en_US
-"catch
-"endtry
-
-" set ffs=unix,dos,mac "Default file types
-
+"colorscheme vividchalk
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text, tab and indent related
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set expandtab
-set shiftwidth=2
-set tabstop=2
-set smarttab
-
-set lbr
-set tw=500
-
-set ai   " Auto indent
-set si   " Smart indent
 set textwidth=80
-set wrap " Wrap lines
-set linebreak
+set wrap                      " Wrap lines
+set linebreak                 " Wrap lines on chars in 'breakat'
 " Have to use Unicode value so that wrapped lines can be distinguished.
 " List of Unicode symbols available at:
 " http://www.fileformat.info/info/unicode/utf8test.htm
@@ -143,7 +147,7 @@ set linebreak
 set showbreak=\ \ \ ↳
 "set listchars=eol:¬,tab:▸\ 
 "set listchars=tab:▸\ 
-set listchars=tab:»·,trail:·,eol:¬
+set list listchars=tab:»·,trail:·,eol:¬
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -182,6 +186,18 @@ let g:showmarks_enable=0
 nmap <leader>Mo :ShowMarksToggle<CR> " toggle Show Marks
 " Toggle Gundo
 nnoremap <F5> :GundoToggle<CR>
+
+" Meta+1-0 jumps to tab 1-10, Shift+Meta+1-0 jumps to tab 11-20:
+"let s:windowmapnr = 0
+"let s:wins='1234567890!@#$%^&*()'
+"while (s:windowmapnr < strlen(s:wins))
+"    exe 'noremap <silent> <D-' . s:wins[s:windowmapnr] . '> ' . (s:windowmapnr + 1) . 'gt'
+"    exe 'inoremap <silent> <D-' . s:wins[s:windowmapnr] . '> <C-O>' . (s:windowmapnr + 1) . 'gt'
+"    exe 'cnoremap <silent> <D-' . s:wins[s:windowmapnr] . '> <C-C>' . (s:windowmapnr + 1) . 'gt'
+"    exe 'vnoremap <silent> <D-' . s:wins[s:windowmapnr] . '> <C-C>' . (s:windowmapnr + 1) . 'gt'
+"    let s:windowmapnr += 1
+"endwhile
+"unlet s:windowmapnr s:wins
 
 " ========================================================================
 " Startup
