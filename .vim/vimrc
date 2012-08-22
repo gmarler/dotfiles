@@ -123,15 +123,19 @@ else
   " set nonu
 endif
 
+set guifont=Inconsolata-dz\ for\ Powerline\ Medium\ 14
+
+let g:Powerline_symbols = 'fancy'
+
 " Solarized Colorscheme
-set background=dark
+"set background=dark
 let g:solarized_termtrans=1
 let g:solarized_termcolors=256
 let g:solarized_contrast="high"
 let g:solarized_visibility="high"
 
-colorscheme solarized
-"colorscheme vividchalk
+"colorscheme solarized
+colorscheme vividchalk
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
