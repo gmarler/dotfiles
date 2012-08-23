@@ -118,8 +118,6 @@ else
   set t_Co=256
   set background=light
   colorscheme summerfruit256
-  " colorscheme khaki
-
   " set nonu
 endif
 
