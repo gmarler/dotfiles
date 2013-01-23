@@ -11,7 +11,7 @@ set copyindent
 set smartindent                   " Smart indent
 set shiftwidth=2                  " # of spaces for autoindening
 set shiftround                    " use multiple of shiftwidth when indenting with '<' and ':
-set showmatch                     " Show matching bracets when text indicator is over them
+set showmatch                     " Show matching brackets when text indicator is over them
 set ignorecase                    " ignore case when searching
 set smartcase                     " ignore case if search pattern is all lowercase, case-sensitive otherwise
 set hlsearch                      " highlight search terms
