@@ -45,8 +45,9 @@ nnoremap ; :                      " ?????
 " Disable filetype plugin just prior to invoking pathogen
 filetype plugin off " Just to be sure we reset everything
 
-" Activate pathogen
-call pathogen#infect() 
+" Activate pathogen and automatically generate help docs
+call pathogen#infect()
+call pathogen#helptags()
 
 " It's now ok to activate filetype plugin
 filetype on
