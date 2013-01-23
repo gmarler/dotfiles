@@ -1,0 +1,14 @@
+My set of Unix "dot" files.
+
+Currently consists of mostly Vim specific configuration.
+
+To use this on a new machine/in a new home directory:
+
+- Clone from github into ~, thus creating ~/dotfiles
+- ln -s ~/dotfiles/.vim/vimrc ~/.vimrc
+- Update the various Vim plugins that I've configured as git submodules
+  - cd ~/dotfiles
+  - git submodule init
+  - git submodule update
+
+And you're good to go!
