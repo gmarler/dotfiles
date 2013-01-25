@@ -1,6 +1,7 @@
 My set of Unix "dot" files.
 
 Currently consists of mostly Vim specific configuration.
+For my purposes, this only works on Solaris 11.1 or higher.
 
 To use this on a new machine/in a new home directory:
 
@@ -11,4 +12,17 @@ To use this on a new machine/in a new home directory:
   - git submodule init
   - git submodule update
 
+TODO: Note that you have to set up ~/.fonts correctly for the PowerLine fonts to
+look right.
+
 And you're good to go!
+
+UPDATE (in progress):
+
+- Looks like the powerline developer(s) have decided that Python 2.7 or later is
+  the only way to fly.  This means that using powerline may require a few
+  additions to what I've noted above:
+  - Install the runtime/python2.7 IPS package
+  - Need to add a git submodule for the new, pre-patched PowerLine fonts:
+    https://github.com/Lokaltog/powerline-fonts
+  - Need to add instructions on getting those fonts into ~/.fonts
