@@ -5,3 +5,4 @@ hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{=kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)
 screen -t shell1  0
 screen -t shell2  1
 #screen -t server  2 ssh me@myserver
+screen -t IRC  2 irssi
