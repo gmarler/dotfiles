@@ -30,7 +30,8 @@ bind f eval "hardstatus ignore"
 bind F eval "hardstatus alwayslastline"
 
 # Default screens
-screen -t shell1  0
-screen -t shell2  1
+screen -t DTrace  0
+screen -t Perl  1
 #screen -t server  2 ssh me@myserver
 screen -t IRC  2 irssi
+screen -t pkgrecv  3
