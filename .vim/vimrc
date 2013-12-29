@@ -68,6 +68,8 @@ let g:mapleader = ","
 
 " Fast saving
 " nmap <leader>w :w!<cr>
+nmap <leader>w :Gwrite!<cr>
+nmap <leader>ws :Gstatus<cr>
 
 " Fast editing of the .vimrc
 map <leader>e :e! ~/.vimrc<cr>
