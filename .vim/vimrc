@@ -205,6 +205,32 @@ nnoremap <F5> :GundoToggle<CR>
 "endwhile
 "unlet s:windowmapnr s:wins
 
+" An interesting Prove() function from http://www.perlmonks.org/?node_id=434793
+"function! Prove ( verbose, taint )
+"    if ! exists("g:testfile")
+"        let g:testfile = "t/*.t"
+"    endif
+"    if g:testfile == "t/*.t" || g:testfile =~ "\.t$"
+"        let s:params = "l"
+"        if a:verbose
+"            let s:params = s:params . "v"
+"        endif
+"        if a:taint
+"            let s:params = s:params . "Tt"
+"        endif
+"        execute "!prove -" . s:params . " " . g:testfile
+"    else
+"       call Compile ()
+"    endif
+"endfunction
+
+"function! Compile ()
+"    if ! exists("g:compilefile")
+"        let g:compilefile = expand("%")
+"    endif
+"    execute "!perl -wc -Ilib " . g:compilefile
+"endfunction
+
 function! TestClassMoose(filePath)
   let l:splitList = split(a:filePath,'/')
   let l:pm_filename   = l:splitList[-1]
@@ -215,11 +241,11 @@ function! TestClassMoose(filePath)
   call add(l:splitList,l:nonpm_filename)
 
   let a:pmPath = join(l:splitList,'::')
-  echo a:pmPath
+  "echo a:pmPath
+  echo system("prove -lv t/tests.t :: " . a:pmPath)
 endfunction
 
 noremap <leader>t :call TestClassMoose(expand('%'))<CR>
-
 
 " ========================================================================
 " Startup
