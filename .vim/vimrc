@@ -73,10 +73,10 @@ nmap <leader>s :Gstatus<cr>
 nmap <leader>c :Gcommit<cr>
 
 " Fast editing of the .vimrc
-map <leader>e :e! ~/.vimrc<cr>
+map <leader>e :e! ~/dotfiles/.vim/vimrc<cr>
 
 " When vimrc is edited, reload it
-autocmd! bufwritepost vimrc source ~/.vimrc
+autocmd! bufwritepost vimrc source ~/dotfiles/.vim/vimrc
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -204,6 +204,22 @@ nnoremap <F5> :GundoToggle<CR>
 "    let s:windowmapnr += 1
 "endwhile
 "unlet s:windowmapnr s:wins
+
+function! TestClassMoose(filePath)
+  let l:splitList = split(a:filePath,'/')
+  let l:pm_filename   = l:splitList[-1]
+  let l:nonpm_filename = substitute(l:pm_filename, ".pm", "", "")
+  call remove(l:splitList,0)
+  call remove(l:splitList,0)
+  call remove(l:splitList,-1)
+  call add(l:splitList,l:nonpm_filename)
+
+  let a:pmPath = join(l:splitList,'::')
+  echo a:pmPath
+endfunction
+
+noremap <leader>t :call TestClassMoose(expand('%'))<CR>
+
 
 " ========================================================================
 " Startup
