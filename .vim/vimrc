@@ -248,9 +248,28 @@ endfunction
 function! MyProve ( filePath, debug )
   let l:proveParams = "lv"
   let l:perlParams = "d"
+
   if ! exists("g:perlTestfile")
     let g:perlTestfile = "t/tests.t"  " Assume Test::Class::Moose style tests
   endif
+
+  if (a:debug == 0)
+   let l:splitList = split(a:filePath,'/')
+   let l:pm_filename   = l:splitList[-1]
+   let l:nonpm_filename = substitute(l:pm_filename, ".pm", "", "")
+   call remove(l:splitList,0)
+   call remove(l:splitList,0)
+   call remove(l:splitList,-1)
+   call add(l:splitList,l:nonpm_filename)
+
+   let l:pmPath = join(l:splitList,'::')
+   let l:fullCmd = "prove -" . l:proveParams . " " . g:perlTestfile . " :: " . l:pmPath
+   echom l:fullCmd
+  else
+    " Call perl directly with debugger
+    echom "Not Implemented yet"
+  endif
+
   " Open a new split and set it up.
   if bufexists("__Perl_Test_Output__")
     let l:bufwindow = bufwinnr("__Perl_Test_Output__")
@@ -270,24 +289,12 @@ function! MyProve ( filePath, debug )
   " setlocal filetype=???
   setlocal buftype=nofile noswapfile nobuflisted nowrap " bufhidden=wipe
 
-  if (a:debug == 0)
-    let l:splitList = split(a:filePath,'/')
-    let l:pm_filename   = l:splitList[-1]
-    let l:nonpm_filename = substitute(l:pm_filename, ".pm", "", "")
-    call remove(l:splitList,0)
-    call remove(l:splitList,0)
-    call remove(l:splitList,-1)
-    call add(l:splitList,l:nonpm_filename)
+  execute '$read !' . l:fullCmd
 
-    let l:pmPath = join(l:splitList,'::')
 "   execute "!prove -" . l:proveParams . " " . g:perlTestfile . " :: " . l:pmPath
-    let l:out = system("prove -" . l:proveParams . " " . g:perlTestfile . " :: " . l:pmPath . " 2>&1")
-    call append(0, split(l:out, '\v\n'))
+"   let l:out = system("prove -" . l:proveParams . " " . g:perlTestfile . " :: " . l:pmPath . " 2>&1")
+"   call append(0, split(l:out, '\v\n'))
 "   echom "prove -" . l:proveParams . " " . g:perlTestfile . " :: " . l:pmPath
-  else
-    " Call perl directly with debugger
-    echom "Not Implemented yet"
-  endif
 endfunction
 
 noremap <leader>t :call TestClassMoose(expand('%'))<CR>
