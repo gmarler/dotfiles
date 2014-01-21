@@ -251,6 +251,25 @@ function! MyProve ( filePath, debug )
   if ! exists("g:perlTestfile")
     let g:perlTestfile = "t/tests.t"  " Assume Test::Class::Moose style tests
   endif
+  " Open a new split and set it up.
+  if bufexists("__Perl_Test_Output__")
+    let l:bufwindow = bufwinnr("__Perl_Test_Output__")
+    if (l:bufwindow != -1)
+      execute l:bufwindow . "wincmd w"
+    else
+      split __Perl_Test_Output__
+    endif
+  else
+    split __Perl_Test_Output__
+    " Make sure the nice ANSI escape sequences get displayed correctly
+    " But make sure we only call this once!
+    AnsiEsc
+  endif
+
+  silent execute "normal! ggdG"
+  " setlocal filetype=???
+  setlocal buftype=nofile noswapfile nobuflisted nowrap " bufhidden=wipe
+
   if (a:debug == 0)
     let l:splitList = split(a:filePath,'/')
     let l:pm_filename   = l:splitList[-1]
@@ -261,7 +280,9 @@ function! MyProve ( filePath, debug )
     call add(l:splitList,l:nonpm_filename)
 
     let l:pmPath = join(l:splitList,'::')
-    execute "!prove -" . l:proveParams . " " . g:perlTestfile . " :: " . l:pmPath
+"   execute "!prove -" . l:proveParams . " " . g:perlTestfile . " :: " . l:pmPath
+    let l:out = system("prove -" . l:proveParams . " " . g:perlTestfile . " :: " . l:pmPath . " 2>&1")
+    call append(0, split(l:out, '\v\n'))
 "   echom "prove -" . l:proveParams . " " . g:perlTestfile . " :: " . l:pmPath
   else
     " Call perl directly with debugger
