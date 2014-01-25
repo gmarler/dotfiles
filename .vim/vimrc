@@ -68,9 +68,10 @@ let g:mapleader = ","
 
 " Fast saving (via Fugitive)
 " nmap <leader>w :w!<cr>
-nmap <leader>w :Gwrite!<cr>
-nmap <leader>s :Gstatus<cr>
-nmap <leader>c :Gcommit<cr>
+nmap <leader>w   :Gwrite!<cr>
+nmap <leader>s   :Gstatus<cr>
+nmap <leader>c   :Gcommit<cr>
+nmap <leader>gpm :Git push origin master<cr>
 
 " Fast editing of the .vimrc
 map <leader>e :e! ~/dotfiles/.vim/vimrc<cr>
