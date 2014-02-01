@@ -290,7 +290,7 @@ function! MyProve ( filePath, debug )
   " setlocal filetype=???
   setlocal buftype=nofile noswapfile nobuflisted nowrap " bufhidden=wipe
 
-  execute '$read !' . l:fullCmd
+  silent execute '$read !' . l:fullCmd
 
 "   execute "!prove -" . l:proveParams . " " . g:perlTestfile . " :: " . l:pmPath
 "   let l:out = system("prove -" . l:proveParams . " " . g:perlTestfile . " :: " . l:pmPath . " 2>&1")
@@ -317,7 +317,7 @@ augroup GnuPGExtra
   autocmd CursorHold *.\(gpg\|asc\|pgp\) quit
 augroup END
 
-function SetGPGOptions()
+function! SetGPGOptions()
   " Set updatetime to 1 minute.
   set updatetime=60000
   " Fold at markers.
