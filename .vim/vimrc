@@ -302,6 +302,13 @@ noremap <leader>t :call TestClassMoose(expand('%'))<CR>
 noremap <leader>T :call MyProve(expand('%') , 0)<CR>
 
 " ========================================================================
+" Session Manager Configuration
+" ========================================================================
+let g:session_autosave = 1
+let g:session_autoload = 1
+
+
+" ========================================================================
 " GNUPG Mode
 " ========================================================================
 let g:GPGExecutable = "/usr/bin/gpg2"
