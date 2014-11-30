@@ -43,3 +43,6 @@
 [submodule ".vim/bundle/vim-misc"]
 	path = .vim/bundle/vim-misc
 	url = http://github.com/xolox/vim-misc.git
+[submodule ".vim/bundle/vim-easymotion"]
+	path = .vim/bundle/vim-easymotion
+	url = http://github.com/Lokaltog/vim-easymotion
