@@ -7,6 +7,9 @@
 export PATH=/usr/perl5/site_perl/5.18.1/bin:/usr/perl5/5.18.1/bin:$PATH
 export PATH=$PATH:/usr/bin:/usr/sbin:/sbin:/usr/gnu/bin
 export PATH=$PATH:/opt/solarisstudio12.3/bin
+
+export MANPATH=/usr/share/man
+
 export PAGER="/usr/bin/less -ins"
 
 #
@@ -40,7 +43,7 @@ if [[ $(/bin/uname -s) == "SunOS" &&
   export TERMINFO=/usr/gnu/share/terminfo
   export TERM=xterm-256color
   export LESS="-R"
-  export PERLDOC_PAGER="less -+C -R"
+  export PERLDOC_PAGER="less -+C -R -ins"
 fi
 
 eval $(gpg-agent --daemon)
