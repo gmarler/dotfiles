@@ -126,9 +126,13 @@ else
   " set nonu
 endif
 
-set guifont=Inconsolata-dz\ for\ Powerline\ Medium\ 14
+"set guifont=Inconsolata-dz\ for\ Powerline\ Medium\ 14
+set guifont=Cousine\ for\ Powerline\ 14
+"set guifont=Roboto\ Mono\ Medium\ for\ Powerline\ 15
+"set guifont=Roboto\ Mono\ Light\ for\ Powerline\ 15
+"set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 18
 
-let g:Powerline_symbols = 'fancy'
+"let g:Powerline_symbols = 'fancy'
 
 " Solarized Colorscheme
 "set background=dark
