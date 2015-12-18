@@ -12,17 +12,18 @@ To use this on a new machine/in a new home directory:
   - git submodule init
   - git submodule update
 
-TODO: Note that you have to set up ~/.fonts correctly for the PowerLine fonts to
-look right.
+Note that you have to set up ~/.fonts correctly for the PowerLine fonts to
+look right with Airline.
+
+To do this:
+
+1. Clone git@github.com:powerline/fonts.git
+2. cd into the repo and run this for your Solaris 11.x home dir:
+
+$ gfind . \( -name '*.[o,t]tf' -or -name '*.pcf.gz' \) -type f -print0 |
+    xargs -0 -I % cp "%" ~/.fonts
+
+$ fc-cache -fv ~/.fonts
+
 
 And you're good to go!
-
-UPDATE (in progress):
-
-- Looks like the powerline developer(s) have decided that Python 2.7 or later is
-  the only way to fly.  This means that using powerline may require a few
-  additions to what I've noted above:
-  - Install the runtime/python2.7 IPS package
-  - Need to add a git submodule for the new, pre-patched PowerLine fonts:
-    https://github.com/Lokaltog/powerline-fonts
-  - Need to add instructions on getting those fonts into ~/.fonts
