@@ -92,8 +92,9 @@ set wildignore+=*.o,*.obj,.git,public/stylesheets/**,public/cache/**
 
 " set cmdheight=2 "The commandbar height
 
-set nohidden      " 
-set lazyredraw    " Don't redraw while executing macros 
+set nohidden      "
+" Disable this or Airline won't be able to update in a timely manner
+"set lazyredraw    " Don't redraw while executing macros
 set magic         " Set magic on, for regular expressions
 set mat=2         " How many tenths of a second to blink
 
@@ -388,3 +389,16 @@ nnoremap <silent> <C-t> :NERDTreeToggle<CR>
 " Allow taglist to be toggled by Ctrl-A:
 nnoremap <silent> <C-a> :TlistToggle<CR>
 
+" Only apply to *.txt files
+augroup HelpInTabs
+  autocmd!
+  autocmd BufEnter *.txt    call HelpInNewTab()
+augroup END
+
+" Only apply to help file
+function! HelpInNewTab()
+  if &buftype == 'help'
+    " Convert the help window into a tab
+    execute "normal \<C-W>T"
+  endif
+endfunction
