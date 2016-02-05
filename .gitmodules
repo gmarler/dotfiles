@@ -43,3 +43,6 @@
 [submodule ".vim/bundle/vim-easymotion"]
 	path = .vim/bundle/vim-easymotion
 	url = http://github.com/Lokaltog/vim-easymotion
+[submodule ".vim/bundle/airline"]
+	path = .vim/bundle/airline
+	url = https://github.com/vim-airline/vim-airline.git

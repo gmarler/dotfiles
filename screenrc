@@ -1,37 +1,9 @@
-hardstatus alwayslastline
-hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{=kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B}%Y-%m-%d %{W}%c %{g}]'
-
-# Very nice tabbed colored hardstatus line
-#hardstatus string '%{= Kd} %{= Kd}%-w%{= Kr}[%{= KW}%n %t%{= Kr}]%{= Kd}%+w %-= %{KG} %H%{KW}|%{KY}%101`%{KW}|%D %M %d %Y%{= Kc} %C%A%{-}'
-
-# Allow bold colors - necessary for some reason
-#attrcolor b ".I"
- 
-# Tell screen how to set colors. AB = background, AF=foreground
-#termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
- 
-# Enables use of shift-PgUp and shift-PgDn
-#termcapinfo xterm|xterms|xs|rxvt ti@:te@
- 
-# Erase background with current bg color
-#defbce "on"
- 
-# Enable 256 color term
-#term xterm-256color
-term screen-256color
- 
-# Cache 30000 lines for scroll back
-defscrollback 30000
-
-
-# Hide hardstatus: ctrl-a f 
-bind f eval "hardstatus ignore"
-# Show hardstatus: ctrl-a F
-bind F eval "hardstatus alwayslastline"
+source $HOME/.screenrc.basic
 
 # Default screens
-screen -t DTrace  0
-screen -t Perl  1
+screen -t "Screen Test" 0
+#screen -t DTrace  0
+#screen -t Perl  1
 #screen -t server  2 ssh me@myserver
-screen -t IRC  2 irssi
-screen -t pkgrecv  3
+#screen -t IRC  2 irssi
+#screen -t pkgrecv  3
