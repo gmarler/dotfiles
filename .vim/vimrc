@@ -1,14 +1,18 @@
+"
+"=====[ Miscellaneous Features (mainly Options) ]==============================
+"
+set nocompatible                  " Don't bother with vi compatibility
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => General
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set nocompatible " Don't bother with vi compatibility
-" Set backspace config - allow backspacing over everything in insert mode
-set backspace=eol,start,indent
-set whichwrap+=<,>,h,l  " ??? how does this work?
-set autoindent                    " Always set autoindenting on
-set copyindent
-set smartindent                   " Smart indent
+set backspace=eol,start,indent    " BS past autoindents, line boundaries, and
+                                  "   even the start of insertion
+
+"=======[ Fix smartindent stupidities ]============
+
+set autoindent                    " Retain indentation on next line
+set smartindent                   " Turn on autoindenting of blocks
+" set copyindent
+
+set whichwrap+=<,>,h,l            " ??? how does this work?
 set shiftwidth=2                  " # of spaces for autoindening
 set shiftround                    " use multiple of shiftwidth when indenting with '<' and ':
 set showmatch                     " Show matching brackets when text indicator is over them
@@ -17,6 +21,11 @@ set smartcase                     " ignore case if search pattern is all lowerca
 set hlsearch                      " highlight search terms
 set incsearch                     " show search matches as you type
 set noshowmode                    " Eliminate default mode, for Airline
+
+"=====[ Enable Nmap command for documented mappings ]==========================
+
+runtime plugin/documap.vim
+
 
 " When searching, will wrap from bottom of buffer to top when going to next match
 set wrapscan
@@ -36,6 +45,8 @@ set cursorcolumn                  " Highlight column cursor is in
 set cursorline                    " Highlight line cursor is on
 
 set title
+set titleold=
+
 set nobackup
 set swapfile
 " Toggle auto-indent for pasting into the editor
@@ -74,11 +85,15 @@ nmap <leader>s   :Gstatus<cr>
 nmap <leader>c   :Gcommit<cr>
 nmap <leader>gpm :Git push origin master<cr>
 
-" Fast editing of the .vimrc
-map <leader>e :e! ~/dotfiles/.vim/vimrc<cr>
+"=====[ Edit and auto-update .vimrc and plugins ]==============================
 
-" When vimrc is edited, reload it
-autocmd! bufwritepost vimrc source ~/dotfiles/.vim/vimrc
+augroup VimReload
+autocmd!
+    autocmd BufWritePost $MYVIMRC source $MYVIMRC
+augroup END
+
+Nmap <silent>  ;v   [Edit .vimrc]          :next $MYVIMRC<CR>
+Nmap           ;vv  [Edit .vim/plugin/...] :next ~/.vim/plugin/
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -156,8 +171,6 @@ set linebreak                 " Wrap lines on chars in 'breakat'
 " http://www.fileformat.info/info/unicode/utf8test.htm
 " Currently using, via C-vuXXXX: 21b3
 set showbreak=\ \ \ ↳
-"set listchars=eol:¬,tab:▸\ 
-"set listchars=tab:▸\ 
 set list listchars=tab:»·,trail:·,eol:¬
 
 
