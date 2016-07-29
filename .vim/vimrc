@@ -76,14 +76,13 @@ set statusline=%F\ %m\ %{fugitive#statusline()}\ %y%=%l,%c\ %P
 " Set to auto read when a file is changed from the outside
 set autoread
 
-" With a map leader it's possible to do extra key combinations
+" With a map leader it's possible to do extra key combinations 
 " like <leader>w saves the current file
 let mapleader = ","
 let g:mapleader = ","
 
 " Fast saving (via Fugitive)
-" nmap <leader>w :w!<cr>
-if exists("*Gwrite")
+if exists(":Gwrite")
   nmap <leader>w   :Gwrite!<cr>
 else
   nmap <leader>w   :w!<cr>
@@ -96,7 +95,7 @@ nmap <leader>gpm :Git push origin master<cr>
 
 augroup VimReload
 autocmd!
-    autocmd BufWritePost vimrc source ~/dotfiles/.vim/vimrc
+    autocmd BufWritePost ~/dotfiles/.vim/vimrc source ~/dotfiles/.vim/vimrc
 augroup END
 
 Nmap <silent>  ;v   [Edit .vimrc]          :next $MYVIMRC<CR>
