@@ -92,7 +92,7 @@ nmap <leader>gpm :Git push origin master<cr>
 
 augroup VimReload
 autocmd!
-    autocmd BufWritePost $MYVIMRC source $MYVIMRC
+    autocmd BufWritePost vimrc source ~/dotfiles/.vim/vimrc
 augroup END
 
 Nmap <silent>  ;v   [Edit .vimrc]          :next $MYVIMRC<CR>
