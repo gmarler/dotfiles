@@ -83,7 +83,11 @@ let g:mapleader = ","
 
 " Fast saving (via Fugitive)
 " nmap <leader>w :w!<cr>
-nmap <leader>w   :Gwrite!<cr>
+if exists("*Gwrite")
+  nmap <leader>w   :Gwrite!<cr>
+else
+  nmap <leader>w   :w!<cr>
+endif
 nmap <leader>s   :Gstatus<cr>
 nmap <leader>c   :Gcommit<cr>
 nmap <leader>gpm :Git push origin master<cr>
