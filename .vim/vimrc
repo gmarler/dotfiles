@@ -20,6 +20,9 @@ set ignorecase                    " ignore case when searching
 set smartcase                     " ignore case if search pattern is all lowercase, case-sensitive otherwise
 set hlsearch                      " highlight all matches
 set incsearch                     " Lookahead as search pattern is specified
+highlight clear Search
+highlight       Search    ctermfg=White
+
 set noshowmode                    " Eliminate default mode, for Airline
 
 "=====[ Enable Nmap command for documented mappings ]==========================
