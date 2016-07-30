@@ -21,7 +21,7 @@ set smartcase                     " ignore case if search pattern is all lowerca
 set hlsearch                      " highlight all matches
 set incsearch                     " Lookahead as search pattern is specified
 highlight clear Search
-highlight       Search    ctermfg=White
+highlight       Search    term=White gui=White ctermfg=White
 
 set noshowmode                    " Eliminate default mode, for Airline
 
