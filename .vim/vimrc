@@ -21,7 +21,7 @@ set smartcase                     " ignore case if search pattern is all lowerca
 set hlsearch                      " highlight all matches
 set incsearch                     " Lookahead as search pattern is specified
 highlight clear Search
-highlight       Search    term=White gui=White ctermfg=White
+highlight       Search    ctermfg=White
 
 set noshowmode                    " Eliminate default mode, for Airline
 
@@ -424,9 +424,9 @@ function! SetPluginOptionsNow()
 
   " Fast saving (via Fugitive)
   if exists(":Gwrite")
-    nmap <leader>w   :Gwrite!<cr>
+    nnoremap <leader>w   :Gwrite!<cr>
   else
-    nmap <leader>w   :w!<cr>
+    nnoremap <leader>w   :w!<cr>
   endif
   nmap <leader>s   :Gstatus<cr>
   nmap <leader>c   :Gcommit<cr>
