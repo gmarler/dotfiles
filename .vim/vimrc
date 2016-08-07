@@ -76,20 +76,10 @@ set statusline=%F\ %m\ %{fugitive#statusline()}\ %y%=%l,%c\ %P
 " Set to auto read when a file is changed from the outside
 set autoread
 
-" With a map leader it's possible to do extra key combinations 
+" With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
 let mapleader = ","
 let g:mapleader = ","
-
-" Fast saving (via Fugitive)
-if exists(":Gwrite")
-  nmap <leader>w   :Gwrite!<cr>
-else
-  nmap <leader>w   :w!<cr>
-endif
-nmap <leader>s   :Gstatus<cr>
-nmap <leader>c   :Gcommit<cr>
-nmap <leader>gpm :Git push origin master<cr>
 
 "=====[ Edit and auto-update .vimrc and plugins ]==============================
 
@@ -424,6 +414,26 @@ function! HelpInNewTab()
     execute "normal \<C-W>T"
   endif
 endfunction
+
+"======[ PLUGIN SPECIFIC OPTIONS ]=============================================
+"=These are "supposed to be" set in after/plugin directory, but then
+"=cross-platform synchronization would get even messier. So, au VimEnter it is.
+
+function! SetPluginOptionsNow()
+
+  " Fast saving (via Fugitive)
+  if exists(":Gwrite")
+    nmap <leader>w   :Gwrite!<cr>
+  else
+    nmap <leader>w   :w!<cr>
+  endif
+  nmap <leader>s   :Gstatus<cr>
+  nmap <leader>c   :Gcommit<cr>
+  nmap <leader>gpm :Git push origin master<cr>
+
+endfunction
+
+au VimEnter * call SetPluginOptionsNow()
 
 "======[ Magically build interim directories if necessary ]====================
 
