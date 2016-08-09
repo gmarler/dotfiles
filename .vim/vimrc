@@ -420,14 +420,19 @@ endfunction
 "=These are "supposed to be" set in after/plugin directory, but then
 "=cross-platform synchronization would get even messier. So, au VimEnter it is.
 
+function! GitWriteIfPossible()
+  " Fast saving (via Fugitive) if available
+  if exists(":Gwrite")
+    :Gwrite!<cr>
+  else
+    :w!<cr>
+  endif
+endfunction
+
+nnoremap <leader>w   :call GitWriteIfPossible()<cr>
+
 function! SetPluginOptionsNow()
 
-  " Fast saving (via Fugitive)
-  if exists(":Gwrite")
-    nnoremap <leader>w   :Gwrite!<cr>
-  else
-    nnoremap <leader>w   :w!<cr>
-  endif
   nmap <leader>s   :Gstatus<cr>
   nmap <leader>c   :Gcommit<cr>
   nmap <leader>gpm :Git push origin master<cr>
