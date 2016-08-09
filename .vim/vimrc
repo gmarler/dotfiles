@@ -421,15 +421,15 @@ endfunction
 "=cross-platform synchronization would get even messier. So, au VimEnter it is.
 
 function! GitWriteIfPossible()
-  " Fast saving (via Fugitive) if available
+  " Fast saving (via Fugitive) - if available
   if exists(":Gwrite")
-    :Gwrite!<cr>
+    :Gwrite! %<cr>
   else
     :w!<cr>
   endif
 endfunction
 
-nnoremap <leader>w   :call GitWriteIfPossible()<cr>
+nnoremap <leader>w :Gwrite!<cr>
 
 function! SetPluginOptionsNow()
 
