@@ -1,6 +1,8 @@
 "
 "=====[ Miscellaneous Features (mainly Options) ]==============================
 "
+scriptencoding utf-8
+set encoding=utf-8
 set nocompatible                  " Don't bother with vi compatibility
 
 set backspace=eol,start,indent    " BS past autoindents, line boundaries, and
@@ -48,7 +50,8 @@ set cursorcolumn                  " Highlight column cursor is in
 set cursorline                    " Highlight line cursor is on
 
 set title
-set titleold=
+"set titleold=
+autocmd VimEnter * let &titleold = hostname()
 
 set nobackup
 set swapfile
@@ -80,6 +83,8 @@ set autoread
 " like <leader>w saves the current file
 let mapleader = ","
 let g:mapleader = ","
+" For file type local mappings, use the maplocalleader
+let maplocalleader = "\\"
 
 "=====[ Edit and auto-update .vimrc and plugins ]==============================
 
@@ -90,6 +95,7 @@ augroup END
 
 Nmap <silent>  ;v   [Edit .vimrc]          :next ~/dotfiles/.vim/vimrc<CR>
 Nmap           ;vv  [Edit .vim/plugin/...] :next ~/.vim/plugin/
+nnoremap       ;vr  :source ~/dotfiles/.vim/vimrc<CR>
 
 
 
@@ -164,10 +170,14 @@ set linebreak                 " Wrap lines on chars in 'breakat'
 " Have to use Unicode value so that wrapped lines can be distinguished.
 " List of Unicode symbols available at:
 " http://www.fileformat.info/info/unicode/utf8test.htm
-" Currently using, via C-vuXXXX: 21b3
-set showbreak=\ \ \ ↳
-set list listchars=tab:»·,trail:·,eol:¬
-
+" Currently using, via C-vuXXXX:
+" DOWNWARDS ARROW WITH TIP RIGHTWARDS        \u21b3 ↳
+" MIDDLE DOT                                 \u00B7 ·
+" NOT SIGN                                   \u00AC ¬
+" RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK \u00BB »
+let &showbreak="\ \ \ \u21b3"
+"set list listchars="tab:\u00bb\u00b7","trail:\u00b7",eol:\u00ac"
+let &listchars="tab:\u00bb\u00b7,trail:\u00b7,eol:\u00ac"
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => FileType specific items
@@ -606,6 +616,22 @@ endfunction
 
 
 " Set up the relevant mappings
-nmap <silent> # :call ToggleComment()<CR>j0
-vmap <silent> # :call ToggleBlock()<CR>
+nnoremap <silent> # :call ToggleComment()<CR>j0
+vnoremap <silent> # :call ToggleBlock()<CR>
 
+
+"=====[ Vim The Hard Way Examples ]============================================
+inoremap <c-u> <esc>viwUi
+nnoremap <c-u> viwU
+
+nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+nnoremap <leader>sv :source $MYVIMRC<cr>
+
+"=====[ Personal Abbreviations ]===============================================
+iabbrev @@ gmarler@gmarler.com
+iabbrev ccopy Copyright 2016 Gordon Marler, all rights reserved.
+iabbrev ssig -- <cr>Gordon Marler<cr>gmarler@gmarler.com<cr>gmarler2@gmail.com
+
+"=====[ Trade out 'jk' for the <ESC> keystroke ]===============================
+inoremap jk <esc>
+inoremap <esc> <nop>
