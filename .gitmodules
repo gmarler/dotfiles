@@ -1,18 +1,18 @@
 [submodule ".vim/bundle/fugitive"]
 	path = .vim/bundle/fugitive
-	url = http://github.com/tpope/vim-fugitive.git
+	url = https://github.com/tpope/vim-fugitive.git
 [submodule ".vim/bundle/nerdtree"]
 	path = .vim/bundle/nerdtree
 	url = https://github.com/scrooloose/nerdtree.git
 [submodule ".vim/bundle/vividchalk"]
 	path = .vim/bundle/vividchalk
-	url = http://github.com/tpope/vim-vividchalk
+	url = https://github.com/tpope/vim-vividchalk.git
 [submodule ".vim/bundle/tagbar"]
 	path = .vim/bundle/tagbar
 	url = https://github.com/majutsushi/tagbar
 [submodule ".vim/bundle/gundo"]
 	path = .vim/bundle/gundo
-	url = http://github.com/sjl/gundo.vim.git
+	url = https://github.com/sjl/gundo.vim.git
 [submodule ".vim/bundle/nerdcommenter"]
 	path = .vim/bundle/nerdcommenter
 	url = https://github.com/scrooloose/nerdcommenter.git
@@ -36,13 +36,13 @@
 	url = https://github.com/jamessan/vim-gnupg.git
 [submodule ".vim/bundle/session"]
 	path = .vim/bundle/session
-	url = http://github.com/xolox/vim-session.git
+	url = https://github.com/xolox/vim-session.git
 [submodule ".vim/bundle/vim-misc"]
 	path = .vim/bundle/vim-misc
-	url = http://github.com/xolox/vim-misc.git
+	url = https://github.com/xolox/vim-misc.git
 [submodule ".vim/bundle/vim-easymotion"]
 	path = .vim/bundle/vim-easymotion
-	url = http://github.com/Lokaltog/vim-easymotion
+	url = https://github.com/easymotion/vim-easymotion.git
 [submodule ".vim/bundle/airline"]
 	path = .vim/bundle/airline
 	url = https://github.com/vim-airline/vim-airline.git
