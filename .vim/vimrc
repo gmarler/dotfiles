@@ -413,9 +413,10 @@ let g:GPGPreferArmor = 1
 let g:GPGPreferSign = 1
 
 augroup GnuPGExtra
-" Set extra file options.
+  autocmd!
+  " Set extra file options.
   autocmd BufReadCmd,FileReadCmd *.\(gpg\|asc\|pgp\) call SetGPGOptions()
-" Automatically close unmodified files after inactivity
+  " Automatically close unmodified files after inactivity
   autocmd CursorHold *.\(gpg\|asc\|pgp\) quit
 augroup END
 
@@ -589,11 +590,14 @@ nmap <silent> <expr>  zu  FS_FoldAroundTarget('^\s*use\s\+\S.*;',{'context':1})
 "=====[ Add or subtract comments ]===============================
 
 " Work out what the comment character is, by filetype...
-autocmd FileType             *sh,awk,python,perl,perl6,ruby    let b:cmt = exists('b:cmt') ? b:cmt : '#'
-autocmd FileType             vim                               let b:cmt = exists('b:cmt') ? b:cmt : '"'
-autocmd BufNewFile,BufRead   *.vim,.vimrc                      let b:cmt = exists('b:cmt') ? b:cmt : '"'
-autocmd BufNewFile,BufRead   *                                 let b:cmt = exists('b:cmt') ? b:cmt : '#'
-autocmd BufNewFile,BufRead   *.p[lm],.t                        let b:cmt = exists('b:cmt') ? b:cmt : '#'
+augroup comment_by_filetype
+  autocmd!
+  autocmd FileType             *sh,awk,python,perl,perl6,ruby    let b:cmt = exists('b:cmt') ? b:cmt : '#'
+  autocmd FileType             vim                               let b:cmt = exists('b:cmt') ? b:cmt : '"'
+  autocmd BufNewFile,BufRead   *.vim,.vimrc                      let b:cmt = exists('b:cmt') ? b:cmt : '"'
+  autocmd BufNewFile,BufRead   *                                 let b:cmt = exists('b:cmt') ? b:cmt : '#'
+  autocmd BufNewFile,BufRead   *.p[lm],.t                        let b:cmt = exists('b:cmt') ? b:cmt : '#'
+augroup END
 
 " Work out whether the line has a comment then reverse that condition...
 function! ToggleComment ()
