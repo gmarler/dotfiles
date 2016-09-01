@@ -633,5 +633,5 @@ iabbrev ccopy Copyright 2016 Gordon Marler, all rights reserved.
 iabbrev ssig -- <cr>Gordon Marler<cr>gmarler@gmarler.com<cr>gmarler2@gmail.com
 
 "=====[ Trade out 'jk' for the <ESC> keystroke ]===============================
-inoremap jk <esc>
-inoremap <esc> <nop>
+"inoremap jk <esc>
+"inoremap <esc> <nop>
