@@ -51,7 +51,10 @@ set cursorline                    " Highlight line cursor is on
 
 set title
 "set titleold=
-autocmd VimEnter * let &titleold = hostname()
+augroup set_titleold
+  autocmd!
+  autocmd VimEnter * let &titleold = hostname()
+augroup END
 
 set nobackup
 set swapfile
@@ -89,8 +92,8 @@ let maplocalleader = "\\"
 "=====[ Edit and auto-update .vimrc and plugins ]==============================
 
 augroup VimReload
-autocmd!
-    autocmd BufWritePost vimrc source ~/dotfiles/.vim/vimrc
+  autocmd!
+  autocmd BufWritePost vimrc source ~/dotfiles/.vim/vimrc
 augroup END
 
 Nmap <silent>  ;v   [Edit .vimrc]          :next ~/dotfiles/.vim/vimrc<CR>
@@ -184,17 +187,38 @@ let &listchars="tab:\u00bb\u00b7,trail:\u00b7,eol:\u00ac"
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if has("autocmd")
   " Syntax of languages that care about having tabs vs spaces
-  autocmd FileType make setlocal tabstop=2 softtabstop=2 shiftwidth=2 noexpandtab
-  autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+  augroup filetype_make
+    autocmd!
+    autocmd FileType make setlocal tabstop=2 softtabstop=2 shiftwidth=2 noexpandtab
+  augroup END
+  augroup filetype_yaml
+    autocmd!
+    autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+  augroup END
 
   " Personal preferences
-  autocmd FileType html       setlocal ts=2 sts=2 sw=2 expandtab
-  autocmd FileType css        setlocal ts=2 sts=2 sw=2 expandtab
-  autocmd FileType javascript setlocal ts=2 sts=2 sw=2 expandtab
-  autocmd FileType perl       setlocal ts=2 sts=2 sw=2 expandtab
+  augroup filetype_html
+    autocmd!
+    autocmd FileType html       setlocal ts=2 sts=2 sw=2 expandtab
+  augroup END
+  augroup filetype_css
+    autocmd!
+    autocmd FileType css        setlocal ts=2 sts=2 sw=2 expandtab
+  augroup END
+  augroup filetype_javascript
+    autocmd!
+    autocmd FileType javascript setlocal ts=2 sts=2 sw=2 expandtab
+  augroup END
+  augroup filetype_perl
+    autocmd!
+    autocmd FileType perl       setlocal ts=2 sts=2 sw=2 expandtab
+  augroup END
 
   " Git specific preferences
-  autocmd FileType gitcommit  setlocal textwidth=72 ts=2 sts=2 sw=2 expandtab
+  augroup filetype_gitcommit
+    autocmd!
+    autocmd FileType gitcommit  setlocal textwidth=72 ts=2 sts=2 sw=2 expandtab
+  augroup END
 endif
 
 
@@ -639,3 +663,5 @@ iabbrev ssig -- <cr>Gordon Marler<cr>gmarler@gmarler.com<cr>gmarler2@gmail.com
 "=====[ Trade out 'jk' for the <ESC> keystroke ]===============================
 "inoremap jk <esc>
 "inoremap <esc> <nop>
+
+
