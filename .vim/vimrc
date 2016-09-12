@@ -76,9 +76,8 @@ filetype plugin on
 filetype indent on
 
 " Set up statusline
-" NOTE: This is disabled to allow airline to work instead
-"set laststatus=2   " always display statusline
-"set statusline=%F\ %m\ %{fugitive#statusline()}\ %y%=%l,%c\ %P
+set laststatus=2   " always display statusline
+set statusline=%F\ %m\ %{fugitive#statusline()}\ %y%=%l,%c\ %P
 
 " Set to auto read when a file is changed from the outside
 set autoread
