@@ -403,9 +403,8 @@ let g:airline_symbols.linenr = ''
 
 let g:airline_powerline_fonts = 1
 
-" ========================================================================
-" GNUPG Mode
-" ========================================================================
+"=======[ GNUPG MODE ]====================================================
+" TODO: Make this path OS platform revision specific
 let g:GPGExecutable = "/usr/bin/gpg2"
 " Tell the GnuPG plugin to armor new files.
 let g:GPGPreferArmor = 1
