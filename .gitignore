@@ -1,6 +1,7 @@
 .vim/.netrwhist
 .vim/sessions
 .vim/tags
+tags
 # Avoid editor temp files
 *.swp
 *.swo
