@@ -360,7 +360,8 @@ let g:session_autoload = 'no'
 " ========================================================================
 " Airline Configuration
 " ========================================================================
-let g:airline_theme            = 'behelit'
+"let g:airline_theme            = 'behelit'
+let g:airline_theme            = 'badwolf'
 let g:airline_enable_branch    = 1
 let g:airline_enable_syntastic = 1
 
