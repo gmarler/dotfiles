@@ -347,8 +347,8 @@ function! MyProve ( filePath, debug )
 "   echom "prove -" . l:proveParams . " " . g:perlTestfile . " :: " . l:pmPath
 endfunction
 
-noremap <leader>t :call TestClassMoose(expand('%'))<CR>
-noremap <leader>T :call MyProve(expand('%') , 0)<CR>
+" noremap <leader>t :call TestClassMoose(expand('%'))<CR>
+" noremap <leader>T :call MyProve(expand('%') , 0)<CR>
 
 " ========================================================================
 " Session Manager Configuration
@@ -667,5 +667,84 @@ iabbrev ssig -- <cr>Gordon Marler<cr>gmarler@gmarler.com<cr>gmarler2@gmail.com
 "=====[ Trade out 'jk' for the <ESC> keystroke ]===============================
 "inoremap jk <esc>
 "inoremap <esc> <nop>
+
+"=====[ Personal Perl VIM Goodies ]================================------------
+
+" quickfix for vim errors. See
+" http://blogs.perl.org/users/ovid/2010/11/vims-quickfix-mode-and-perl.html
+set errorformat+=%m\ at\ %f\ line\ %l\.
+set errorformat+=%m\ at\ %f\ line\ %l
+
+" === NOTE === TODO ==== WARNING - check the scope of this setting
+setlocal iskeyword+=:
+
+noremap  K           :!perldoc <cword> <bar><bar> perldoc -f <cword><cr>
+noremap  <leader>pd  :!perldoc "%" <bar> less -R<cr>
+nnoremap <leader>pt  :%!perltidy -q<cr> " only work in 'normal' mode
+vnoremap <leader>pt  :!perltidy -q<cr>  " only work in 'visual' mode
+noremap  <leader>d   :!perl -d %<cr>
+
+augroup perl_filetypedetect
+    autocmd! BufRead,BufNewFile *.pl,*.pm    setfiletype perl
+    autocmd! BufRead,BufNewFile *.t          call s:PerlTestMappings()
+augroup END
+
+function! PerlTest(testfile)
+    new +setf\ TAPVerboseOutput
+    execute '%! prove -vl -It/lib ' . a:testfile
+endfunction
+
+function! PerlCurrentSubName()
+    let s:currline = line('.')
+    let s:currcol = col('.')
+    normal $ 
+    let [s:line, s:column] = searchpos('^\s*sub\s\+\zs\(\w\+\)','bcW')
+    if (s:line != 0)
+        let s:subname = getline(s:line)
+    else
+        let s:subname = '(not in sub)'
+    endif
+    call cursor(s:currline, s:currcol)
+    return s:subname
+endfunction
+
+function! RunTestsInBuffers()
+    let i = 1
+    let tests = ''
+    while (i <= bufnr("$"))
+        let filename = bufname(i)
+        if match(filename, '\.t$') > -1
+            let tests = tests . ' "' . filename . '"'
+        endif
+        let i = i+1
+    endwhile
+    if !strlen(tests)
+        echo "No tests found in buffers"
+    else
+        execute ':!prove -l -It/lib ' . tests
+    endif
+endfunction
+
+
+function! s:PerlTestMappings()
+    setfiletype perl
+    setlocal statusline+=%(\ %{PerlCurrentSubName()}%)
+    setlocal statusline+=%=
+    setlocal statusline+=%f\ 
+    setlocal statusline+=%P\ 
+
+    " run the current test with prove
+    noremap <buffer> <leader>r :!prove -vl %<cr>
+    " run the current test with prove
+    noremap <buffer> <leader>t :!prove -vl %<CR>
+
+    " run the tests in current buffer. Split window and put output in new
+    " buffer
+    noremap <buffer> <leader>T :call PerlTest(bufname('%'))<CR>
+
+    " turns all comments into explain() statements. Requires Test::Most
+    noremap <buffer> <leader>fp :%s/^\(\s*\)# \(.*\)/\1explain("\2");<cr>
+    noremap <leader>tb :call RunTestsInBuffers()<cr>
+endfunction
 
 
