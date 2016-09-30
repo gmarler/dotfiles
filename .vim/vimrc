@@ -673,11 +673,11 @@ iabbrev ssig -- <cr>Gordon Marler<cr>gmarler@gmarler.com<cr>gmarler2@gmail.com
 
 
 "noremap  K           :!perldoc <cword> <bar><bar> perldoc -f <cword><cr>
-noremap  K           call s:PerlDocCurrentWord(<cword>)
-noremap  <leader>pd  :!perldoc "%" <bar> less -R<cr>
-nnoremap <leader>pt  :%!perltidy -q<cr> " only work in 'normal' mode
-vnoremap <leader>pt  :!perltidy -q<cr>  " only work in 'visual' mode
-noremap  <leader>d   :!perl -d %<cr>
+nnoremap  K           call s:PerlDocCurrentWord(<cword>)
+nnoremap  <leader>pd  :!perldoc "%" <bar> less -R<cr>
+nnoremap  <leader>pt  :%!perltidy -q<cr> " only work in 'normal' mode
+vnoremap  <leader>pt  :!perltidy -q<cr>  " only work in 'visual' mode
+nnoremap  <leader>d   :!perl -d %<cr>
 
 function! PerlDocCurrentWord(word)
   " Get the perldoc output
