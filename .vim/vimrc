@@ -670,23 +670,38 @@ iabbrev ssig -- <cr>Gordon Marler<cr>gmarler@gmarler.com<cr>gmarler2@gmail.com
 
 "=====[ Personal Perl VIM Goodies ]================================------------
 
-" quickfix for vim errors. See
-" http://blogs.perl.org/users/ovid/2010/11/vims-quickfix-mode-and-perl.html
-set errorformat+=%m\ at\ %f\ line\ %l\.
-set errorformat+=%m\ at\ %f\ line\ %l
 
-" === NOTE === TODO ==== WARNING - check the scope of this setting
-setlocal iskeyword+=:
 
-noremap  K           :!perldoc <cword> <bar><bar> perldoc -f <cword><cr>
+"noremap  K           :!perldoc <cword> <bar><bar> perldoc -f <cword><cr>
+noremap  K           call s:PerlDocCurrentWord(<cword>)
 noremap  <leader>pd  :!perldoc "%" <bar> less -R<cr>
 nnoremap <leader>pt  :%!perltidy -q<cr> " only work in 'normal' mode
 vnoremap <leader>pt  :!perltidy -q<cr>  " only work in 'visual' mode
 noremap  <leader>d   :!perl -d %<cr>
 
+function! PerlDocCurrentWord(word)
+  " Get the perldoc output
+  let s:perldoc_out = systemlist("perldoc " . a:word)
+
+  " Open a new split for the output and set it up
+  split_f __PERLDOC_OUTPUT__
+  normal! ggdG
+  setlocal filetype=text
+  setlocal buftype=nofile
+
+  " Insert the output.
+  call append(0, s:perldoc_out)
+endfunction
+
 augroup perl_filetypedetect
-    autocmd! BufRead,BufNewFile *.pl,*.pm    setfiletype perl
-    autocmd! BufRead,BufNewFile *.t          call s:PerlTestMappings()
+  autocmd!
+  autocmd FileType           perl         setlocal iskeyword+=:
+  " quickfix for vim errors. See
+  " http://blogs.perl.org/users/ovid/2010/11/vims-quickfix-mode-and-perl.html
+  autocmd FileType           perl         setlocal errorformat+=%m\ at\ %f\ line\ %l\.
+  autocmd FileType           perl         setlocal errorformat+=%m\ at\ %f\ line\ %l
+  autocmd BufRead,BufNewFile *.pl,*.pm    setfiletype perl
+  autocmd BufRead,BufNewFile *.t          call s:PerlTestMappings()
 augroup END
 
 function! PerlTest(testfile)
