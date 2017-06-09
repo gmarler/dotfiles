@@ -7,6 +7,7 @@ To use this on a new machine/in a new home directory:
 
 - Clone from github into ~, thus creating ~/dotfiles
 - ln -s ~/dotfiles/.vim/vimrc ~/.vimrc
+- ln -s ~/dotfiles/.vim       ~/.vim
 - Update the various Vim plugins that I've configured as git submodules
   - cd ~/dotfiles
   - git submodule init
