@@ -213,6 +213,11 @@ if has("autocmd")
     autocmd!
     autocmd FileType perl       setlocal ts=2 sts=2 sw=2 expandtab
   augroup END
+  augroup filetype_python
+    autocmd!
+    autocmd FileType python     setlocal ts=2 sts=2 sw=2 expandtab
+  augroup END
+
 
   " Git specific preferences
   augroup filetype_gitcommit
@@ -403,6 +408,9 @@ let g:airline_symbols.linenr = ''
 "let g:airline_symbols.linenr = '⭡'
 
 let g:airline_powerline_fonts = 1
+
+"=======[ Python MODE ]====================================================
+let g:python_highlight_all = 1
 
 "=======[ GNUPG MODE ]====================================================
 " TODO: Make this path OS platform revision specific
