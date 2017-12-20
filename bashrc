@@ -39,7 +39,8 @@ case "$-" in
   *i*)
     #export PS1='\n[\u@\h t:\l l:$SHLVL h:\! j:\j v:\V]\n$PWD\$ '
     #export PS1='\n[\u@\h:T\l:L$SHLVL:C\!:\D{%Y-%m-%d_%H:%M:%S_%Z}]\n$PWD\$ '
-    export PS1='\n[\u@\h:T\l:L$SHLVL:C\!:J\j:\D{%Y-%m-%d_%H:%M:%S_%Z}]\n$PWD\$ '
+    #export PS1='\n[\u@\h:T\l:L$SHLVL:C\!:J\j:\D{%Y-%m-%d_%H:%M:%S_%Z}]\n$PWD\$ '
+    export PS1='\n[\u@\h:T\l:L$SHLVL:C\!:J\j]\n\w \$ '
     #export PS2='> ' # Secondary (i.e. continued) prompt
 
     #export PS3='Please make a choice: '          # Select prompt
@@ -64,7 +65,7 @@ done
 
 # No core files by default
 # See also /etc/security/limits.conf on many Linux systems.
-ulimit -S -c 0 > /dev/null 2>&1
+# ulimit -S -c 0 > /dev/null 2>&1
 
 # Set various aspects of the bash history
 export HISTSIZE=5000          # Num. of commands in history stack in memory
@@ -78,7 +79,7 @@ shopt -q -s cdspell           # Auto-fix minor typos in interactive use of 'cd'
 shopt -q -s checkwinsize      # Update the values of LINES and COLUMNS
 shopt -q -s cmdhist           # Make multiline commands 1 line in history
 set -o notify   # (or set -b) # Immediate notif. of background job termination.
-set -o ignoreeof              # Don't let Ctrl-D exit the shell
+# set -o ignoreeof              # Don't let Ctrl-D exit the shell
 
 # Other bash settings
 PATH="$PATH:/opt/bin"
@@ -112,7 +113,8 @@ for path in $SETTINGS /opt/bin ~/ ${PATH//:/ }; do
 done
 
 # Set other less & editor prefs (overkill)
-export LESS="--LONG-PROMPT --LINE-NUMBERS --ignore-case --QUIET --no-init"
+#export LESS="--LONG-PROMPT --LINE-NUMBERS --ignore-case --QUIET --no-init"
+export LESS="--LONG-PROMPT --ignore-case --QUIET --no-init"
 export VISUAL='vi'  # Set a default that should always work
 # We'd rather use 'type -P' here, but that was added in bash-2.05b and we use
 # systems we don't control with versions older than that.  We can't easily
