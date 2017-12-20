@@ -40,7 +40,7 @@ case "$-" in
     #export PS1='\n[\u@\h t:\l l:$SHLVL h:\! j:\j v:\V]\n$PWD\$ '
     #export PS1='\n[\u@\h:T\l:L$SHLVL:C\!:\D{%Y-%m-%d_%H:%M:%S_%Z}]\n$PWD\$ '
     #export PS1='\n[\u@\h:T\l:L$SHLVL:C\!:J\j:\D{%Y-%m-%d_%H:%M:%S_%Z}]\n$PWD\$ '
-    export PS1='\n[\u@\h:T\l:L$SHLVL:C\!:J\j]\n\w \$ '
+    export PS1="\n[\u@\h:T\l:L$SHLVL:C\!:J\j \$(parse_git_branch) ]\n\w \$ "
     #export PS2='> ' # Secondary (i.e. continued) prompt
 
     #export PS3='Please make a choice: '          # Select prompt
@@ -82,7 +82,9 @@ set -o notify   # (or set -b) # Immediate notif. of background job termination.
 # set -o ignoreeof              # Don't let Ctrl-D exit the shell
 
 # Other bash settings
-PATH="$PATH:/opt/bin"
+# TODO: Make PATH specific to:
+#       - Solaris, - RedHat Linux, - Fedora, - Ubuntu, - MacOS
+#PATH="$PATH:/opt/bin"
 export MANWIDTH=80          # Manpage width, use < 80 if COLUMNS=80 & less -N
 export LC_COLLATE='C'         # Set traditional C sort order (e.g. UC first)
 export HOSTFILE='/etc/hosts'  # Use /etc/hosts for hostname completion
@@ -226,4 +228,6 @@ done
 
 
 # Useful functions
-
+parse_git_branch() {
+     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
