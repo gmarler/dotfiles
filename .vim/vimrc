@@ -217,6 +217,15 @@ if has("autocmd")
     autocmd!
     autocmd FileType python     setlocal ts=2 sts=2 sw=2 expandtab
   augroup END
+  augroup filetype_c
+    autocmd!
+    autocmd FileType c          setlocal ts=2 sts=2 sw=2 expandtab
+  augroup END
+  augroup filetype_cpp
+    autocmd!
+    autocmd FileType cpp        setlocal ts=2 sts=2 sw=2 expandtab
+  augroup END
+
 
 
   " Git specific preferences
