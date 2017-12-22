@@ -40,6 +40,7 @@ UNAME_S=$(/bin/uname -s)
 # something like:  if [ "$PS1" ]; then
 case "$-" in
   *i*)
+    export PROMPT_DIRTRIM=4
     #export PS1='\n[\u@\h t:\l l:$SHLVL h:\! j:\j v:\V]\n$PWD\$ '
     #export PS1='\n[\u@\h:T\l:L$SHLVL:C\!:\D{%Y-%m-%d_%H:%M:%S_%Z}]\n$PWD\$ '
     #export PS1='\n[\u@\h:T\l:L$SHLVL:C\!:J\j:\D{%Y-%m-%d_%H:%M:%S_%Z}]\n$PWD\$ '
