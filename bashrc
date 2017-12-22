@@ -161,51 +161,23 @@ alias lrt="ls $LS_OPTIONS -alrt"
 # Useful aliases
 # Moved to a function: alias bot='cd $(dirname $(find . | tail -1))'
 #alias clip='xsel -b'         # pipe stuff into right "X" clipboard
-alias gc='xsel -b'           # "GetClip" get stuff from right "X" clipboard
-alias pc='xsel -bi'          # "PutClip" put stuff to right "X" clipboard
 alias clr='cd ~/ && clear'   # Clear and return $HOME
-alias cls='clear'            # DOS-ish for clear
-alias cal='cal -M'           # Start calendars on Monday
-alias copy='cp'              # DOS-ish for cp
-#alias cp='cp -i'            # Annoying Red Hat default from /root/.bashrc
-alias cvsst='cvs -qn update' # Hack to get concise CVS status (like svn st)
-alias del='rm'               # DOS-ish for rm
-alias df='df --print-type --exclude-type=tmpfs --exclude-type=devtmpfs'
 alias diff='diff -u'         # Make unified diffs the default
-alias jdiff="\diff --side-by-side --ignore-case --ignore-blank-lines\
-  --ignore-all-space --suppress-common-lines" # Useful GNU diff command
-alias dir='ls'               # DOS-ish for ls
 alias hu='history -n && history -a' # Read new hist. lines; append current lines
 alias hr='hu'                # "History update" backward compat to 'hr'
-alias inxi='inxi -c19'       # (Ubuntu) system information script
-alias ipconfig='ifconfig'    # Windows-ish for ifconfig
 alias lesss='less -S'        # Don't wrap lines
 alias locate='locate -i'     # Case-insensitive locate
 alias man='LANG=C man'       # Display manpages properly
-alias md='mkdir'             # DOS-ish for mkdir
-alias move='mv'              # DOS-ish for mv
-#alias mv='mv -i'            # Annoying Red Hat default from /root/.bashrc
-alias ntsysv='rcconf'        # Debian rcconf is pretty close to Red Hat ntsysv
 #alias open='gnome-open'     # Open files & URLs using GNOME handlers; see run below
-alias pathping='mtr'         # mtr - a network diagnostic tool
-alias ping='ping -c4'        # Only 4 pings by default
+#alias ping='ping -c4'        # Only 4 pings by default
 alias r='fc -s'              # Recall and execute 'command' starting with...
-alias rd='rmdir'             # DOS-ish for rmdir
 # Tweaked from http://bit.ly/2fc4e8Z
 alias randomwords="shuf -n102 /usr/share/dict/words \
   | perl -ne 'print qq(\u\$_);' | column"
-alias ren='mv'               # DOS-ish for mv/rename
-#alias rm='rm -i'            # Annoying Red Hat default from /root/.bashrc
 alias reloadbind='rndc -k /etc/bind/rndc.key freeze \
   && rndc -k /etc/bind/rndc.key reload && rndc -k /etc/bind/rndc.key thaw'
   # Reload dynamic BIND zones after editing db.* files
-alias svndiff='meld'         # Cool GUI diff, similar to TortoiseMerge
-alias svnpropfix='svn propset svn:keywords "id url date"'
-alias svnkey='svn propset svn:keywords "id url"'
-alias svneol='svn propset svn:eol-style'  # One of 'native', 'LF', 'CR', 'CRLF'
-alias svnexe='svn propset svn:executable on'
 alias top10='sort | uniq -c | sort -rn | head'
-alias tracert='traceroute'   # DOS-ish for traceroute
 alias vzip='unzip -lvM'      # View contents of ZIP file
 alias wgetdir="wget --no-verbose --recursive --no-parent --no-directories \
  --level=1"                  # Grab a whole directory using wget
@@ -219,7 +191,18 @@ alias now="date       '+%F %T %Z(%z)'"       # More readable ISO 8601 local
 alias utc="date --utc '+%F %T %Z(%z)'"       # More readable ISO 8601 UTC
 
 if [[ "{$UNAME_S}" == "Linux" ]]; then
+  alias gc='xsel -b'           # "GetClip" get stuff from right "X" clipboard
+  alias pc='xsel -bi'          # "PutClip" put stuff to right "X" clipboard
+  alias cal='cal -M'           # Start calendars on Monday
+  alias df='df --print-type --exclude-type=tmpfs --exclude-type=devtmpfs'
+  alias inxi='inxi -c19'       # (Ubuntu) system information script
+  alias jdiff="\diff --side-by-side --ignore-case --ignore-blank-lines\
+    --ignore-all-space --suppress-common-lines" # Useful GNU diff command
+  alias ntsysv='rcconf'        # Debian rcconf is pretty close to Red Hat ntsysv
+  alias pathping='mtr'         # mtr - a network diagnostic tool
+  #
   # Neat stuff from http://xmodulo.com/useful-bash-aliases-functions.html
+  #
   alias meminfo='free -m -l -t'   # See how much memory you have left
   alias whatpid='ps auwx | grep'  # Get PID and process info
   alias port='netstat -tulanp'    # Show which apps are connecting to the network
