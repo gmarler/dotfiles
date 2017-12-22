@@ -7,6 +7,9 @@
 # expanded.
 : ${SETTINGS:='SETTINGS_variable_not_set'}
 
+# Set this so we can differentiate between Linux/SunOS specifics items
+UNAME_S=$(/bin/uname -s)
+
 # DEBUGGING only - will break scp, rsync
 # echo "Sourcing $SETTINGS/bash_profile..."
 # export PS4='+xtrace $LINENO: '
@@ -108,7 +111,7 @@ fi
 
 # Use a lesspipe filter, if we can find it.  This sets the $LESSOPEN variable.
 # Globally replace the $PATH ':' delimiter with space for use in a list.
-for path in $SETTINGS /opt/bin ~/ ${PATH//:/ }; do
+for path in $SETTINGS ~/ ${PATH//:/ }; do
     # Use first one found of 'lesspipe.sh' (preferred) or 'lesspipe' (Debian)
     [ -x "$path/lesspipe.sh" ] && eval $("$path/lesspipe.sh") && break
     [ -x "$path/lesspipe" ]    && eval $("$path/lesspipe")    && break
@@ -215,10 +218,12 @@ alias iso8601="date '+%Y-%m-%dT%H:%M:%S%z'"  # ISO 8601 time
 alias now="date       '+%F %T %Z(%z)'"       # More readable ISO 8601 local
 alias utc="date --utc '+%F %T %Z(%z)'"       # More readable ISO 8601 UTC
 
-# Neat stuff from http://xmodulo.com/useful-bash-aliases-functions.html
-alias meminfo='free -m -l -t'   # See how much memory you have left
-alias whatpid='ps auwx | grep'  # Get PID and process info
-alias port='netstat -tulanp'    # Show which apps are connecting to the network
+if [[ "{$UNAME_S}" == "Linux" ]]; then
+  # Neat stuff from http://xmodulo.com/useful-bash-aliases-functions.html
+  alias meminfo='free -m -l -t'   # See how much memory you have left
+  alias whatpid='ps auwx | grep'  # Get PID and process info
+  alias port='netstat -tulanp'    # Show which apps are connecting to the network
+fi
 
 # If the script exists and is executable, create an alias to get
 # web server headers
