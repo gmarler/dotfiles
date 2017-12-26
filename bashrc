@@ -84,6 +84,7 @@ shopt -q -s checkwinsize      # Update the values of LINES and COLUMNS
 shopt -q -s cmdhist           # Make multiline commands 1 line in history
 set -o notify   # (or set -b) # Immediate notif. of background job termination.
 # set -o ignoreeof              # Don't let Ctrl-D exit the shell
+set -o vi                     # Vi command line editing mode
 
 # Other bash settings
 # TODO: Make PATH specific to:
