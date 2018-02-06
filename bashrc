@@ -8,7 +8,15 @@
 : ${SETTINGS:='SETTINGS_variable_not_set'}
 
 # Set this so we can differentiate between Linux/SunOS specifics items
-UNAME_S=$(/bin/uname -s)
+if [[ -x /usr/bin/uname ]]; then
+  # MacOS
+  UNAME=/usr/bin/uname
+elif [[ -x /bin/uname ]]; then
+  # Linux, Solaris
+  UNAME=/bin/uname
+fi
+
+UNAME_S=$(${UNAME} -s)
 
 # DEBUGGING only - will break scp, rsync
 # echo "Sourcing $SETTINGS/bash_profile..."
