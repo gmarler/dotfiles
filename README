@@ -1,11 +1,17 @@
 My set of Unix "dot" files.
 
 Currently consists of mostly Vim specific configuration.
-For my purposes, this only works on Solaris 11.1 or higher.
+This tends to work on Solaris 11, Linux, and MacOS
+
 
 To use this on a new machine/in a new home directory:
 
 - Clone from github into ~, thus creating ~/dotfiles
+
+- To get tmux working:
+- ln -s dotfiles/tmux.conf ~/.tmux.conf
+
+- For vim:
 - ln -s ~/dotfiles/.vim/vimrc ~/.vimrc
 - ln -s ~/dotfiles/.vim       ~/.vim
 - Update the various Vim plugins that I've configured as git submodules
