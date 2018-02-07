@@ -218,6 +218,9 @@ if [[ "{$UNAME_S}" == "Linux" ]]; then
   alias port='netstat -tulanp'    # Show which apps are connecting to the network
 fi
 
+# Admin Server aliases
+alias rw="rwin -s"
+
 # If the script exists and is executable, create an alias to get
 # web server headers
 for path in ${PATH//:/ }; do
