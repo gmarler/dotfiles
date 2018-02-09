@@ -231,6 +231,7 @@ done
 # Useful functions
 parse_git_branch() {
      git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
 
 # Custom local overrides
 if [[ -f "$HOME/.bashrc.custom" ]]; then
