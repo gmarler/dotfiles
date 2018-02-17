@@ -98,7 +98,8 @@ set -o vi                     # Vi command line editing mode
 # TODO: Make PATH specific to:
 #       - Solaris, - RedHat Linux, - Fedora, - Ubuntu, - MacOS
 #PATH="$PATH:/opt/bin"
-export MANWIDTH=80          # Manpage width, use < 80 if COLUMNS=80 & less -N
+PATH=${HOME}/bin:${PATH}      # HOME binaries are always first
+export MANWIDTH=80            # Manpage width, use < 80 if COLUMNS=80 & less -N
 export LC_COLLATE='C'         # Set traditional C sort order (e.g. UC first)
 export HOSTFILE='/etc/hosts'  # Use /etc/hosts for hostname completion
 export CDPATH='.:~/:..:../..' # Similar to $PATH, but for use by 'cd'
