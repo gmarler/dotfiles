@@ -240,3 +240,14 @@ if [[ -f "$HOME/.bashrc.custom" ]]; then
   source $HOME/.bashrc.custom
 fi
 
+# Ubuntu Packaging (Debian) specific
+if test -x /usr/bin/lsb_release; then
+  if /usr/bin/lsb_release -i | grep -q "Ubuntu"; then
+    export DEBFULLNAME="Gordon Marler"
+    export DEBEMAIL="gmarler@bloomberg.net"
+    # Quilt related
+    alias dquilt="quilt --quiltrc=${HOME}/.quiltrc-dpkg"
+    complete -F _quilt_completion -o filenames dquilt
+  fi
+fi
+
