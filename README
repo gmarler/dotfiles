@@ -25,12 +25,17 @@ look right with Airline.
 To do this:
 
 1. Clone git@github.com:powerline/fonts.git
-2. cd into the repo and run this for your Solaris 11.x home dir:
+2.
+  a. For Solaris 11:
+     cd into the repo and run this for your Solaris 11.x home dir:
 
-$ gfind . \( -name '*.[o,t]tf' -or -name '*.pcf.gz' \) -type f -print0 |
-    xargs -0 -I % cp "%" ~/.fonts
+     $ gfind . \( -name '*.[o,t]tf' -or -name '*.pcf.gz' \) -type f -print0 |
+         xargs -0 -I % cp "%" ~/.fonts
 
-$ fc-cache -fv ~/.fonts
+     $ fc-cache -fv ~/.fonts
+
+  b. For Linux
+     Just follow the Powerline README instructions
 
 
 And you're good to go!

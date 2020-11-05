@@ -367,7 +367,7 @@ endfunction
 " ========================================================================
 " Session Manager Configuration
 " ========================================================================
-let g:session_autosave = 1
+let g:session_autosave = 'no'
 "let g:session_autoload = 1
 let g:session_autoload = 'no'
 
