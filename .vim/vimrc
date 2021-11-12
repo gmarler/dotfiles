@@ -225,6 +225,11 @@ if has("autocmd")
     autocmd!
     autocmd FileType cpp        setlocal ts=2 sts=2 sw=2 expandtab
   augroup END
+  augroup filetype_rust
+    autocmd!
+    autocmd FileType rust        setlocal ts=2 sts=2 sw=2 expandtab
+  augroup END
+
 
 
 
