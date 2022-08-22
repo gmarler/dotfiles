@@ -39,3 +39,6 @@ To do this:
 
 
 And you're good to go!
+
+TO ADD A NEW VIM SUBMODULE:
+See http://vimcasts.org/episodes/synchronizing-plugins-with-git-submodules-and-pathogen/
