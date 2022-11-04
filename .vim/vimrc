@@ -227,10 +227,8 @@ if has("autocmd")
   augroup END
   augroup filetype_rust
     autocmd!
-    autocmd FileType rust        setlocal ts=2 sts=2 sw=2 expandtab
+    autocmd FileType rs         setlocal ts=2 sts=2 sw=2 expandtab
   augroup END
-
-
 
 
   " Git specific preferences
