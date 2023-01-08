@@ -12,8 +12,8 @@ To use this on a new machine/in a new home directory:
 - ln -s dotfiles/tmux.conf ~/.tmux.conf
 
 - For vim 8.x and later:
-  - ln -s ~/dotfiles/vim8_rc/.vimrc ~/.vimrc
   - ln -s ~/dotfiles/vim8_dir       ~/.vim
+  # No longer a need to link .vimrc, as a .vim/vimrc is sufficient
   # install minpac packages
   # generate documentation for all minpac packages
 
