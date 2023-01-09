@@ -11,7 +11,13 @@ To use this on a new machine/in a new home directory:
 - To get tmux working:
 - ln -s dotfiles/tmux.conf ~/.tmux.conf
 
-- For vim:
+- For vim 8.x and later:
+  - ln -s ~/dotfiles/vim8_dir       ~/.vim
+  # No longer a need to link .vimrc, as a .vim/vimrc is sufficient
+  # install minpac packages
+  # generate documentation for all minpac packages
+
+- For vim prior to vim 8.x::
 - ln -s ~/dotfiles/.vim/vimrc ~/.vimrc
 - ln -s ~/dotfiles/.vim       ~/.vim
 - Update the various Vim plugins that I've configured as git submodules

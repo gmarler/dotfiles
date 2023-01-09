@@ -1,0 +1,322 @@
+
+"=====[ Set up minpac Package Manager ]==============================
+"
+" Normally this if-block is not needed, because `:set nocp` is done
+" automatically when .vimrc is found. However, this might be useful
+" when you execute `vim -u .vimrc` from the command line.
+if &compatible
+  " `:set nocp` has many side effects. Therefore this should be done
+  " only when 'compatible' is set.
+  set nocompatible
+endif
+packadd minpac
+
+call minpac#init()
+call minpac#add('k-takata/minpac', {'type': 'opt'})
+call minpac#add('preservim/nerdtree')
+call minpac#add('https://tpope.io/vim/fugitive')
+call minpac#add('tpope/vim-vividchalk')
+call minpac#add('tpope/vim-unimpaired')
+call minpac#add('vim-airline/vim-airline')
+call minpac#add('vim-airline/vim-airline-themes')
+call minpac#add('altercation/vim-colors-solarized')
+call minpac#add('rust-lang/rust.vim')
+call minpac#add('easymotion/vim-easymotion')
+
+command! PackUpdate call minpac#update()
+command! PackClean call minpac#clean()
+
+
+"=====[ Miscellaneous Features (mainly Options) ]==============================
+"
+scriptencoding utf-8
+set encoding=utf-8
+" This is already done above when minpac is set up now
+"set nocompatible                  " Don't bother with vi compatibility
+
+set backspace=eol,start,indent    " BS past autoindents, line boundaries, and
+                                  "   even the start of insertion
+"=======[ Fix smartindent stupidities ]============
+
+set autoindent                    " Retain indentation on next line
+set smartindent                   " Turn on autoindenting of blocks
+" set copyindent
+
+set whichwrap+=<,>,h,l            " ??? how does this work?
+set shiftwidth=2                  " # of spaces for autoindening
+set shiftround                    " use multiple of shiftwidth when indenting with '<' and ':
+set showmatch                     " Show matching brackets when text indicator is over them
+set ignorecase                    " ignore case when searching
+set smartcase                     " ignore case if search pattern is all lowercase, case-sensitive otherwise
+set hlsearch                      " highlight all matches
+set incsearch                     " Lookahead as search pattern is specified
+highlight clear Search
+highlight       Search    ctermfg=White
+
+set noshowmode                    " Eliminate default mode, for Airline
+
+
+" When searching, will wrap from bottom of buffer to top when going to next match
+set wrapscan
+
+" Sets how many lines of history VIM has to remember
+set history=1000
+set undolevels=1000
+
+" Use spaces, rather than <TAB>, for indenting
+set expandtab
+set tabstop=2
+set smarttab                      " ????
+
+set ruler                         " Always show current position
+set number                        " Always show line numbers
+set cursorcolumn                  " Highlight column cursor is in
+set cursorline                    " Highlight line cursor is on
+
+set title
+"set titleold=
+augroup set_titleold
+  autocmd!
+  autocmd VimEnter * let &titleold = hostname()
+augroup END
+
+set nobackup
+set swapfile
+" Toggle auto-indent for pasting into the editor
+set pastetoggle=<F2>
+
+nnoremap ; :                      " ?????
+
+" Set up statusline
+set laststatus=2   " always display statusline
+" NOTE: this is overwritten by vim-airline later on
+set statusline=%F\ %m\ %{FugitiveStatusline()}\ %y%=%l,%c\ %P
+
+" Set to auto read when a file is changed from the outside
+set autoread
+
+" With a map leader it's possible to do extra key combinations
+" like <leader>w saves the current file
+let mapleader = ","
+let g:mapleader = ","
+" For file type local mappings, use the maplocalleader
+let maplocalleader = "\\"
+
+"=====[ Edit and auto-update .vimrc and plugins ]==============================
+
+augroup VimReload
+  autocmd!
+  " The reason for using nested here is due to also using vim-airline.  The
+  " process of loading airline triggers some autocommands, but since you're in
+  " the middle of executing an autocommand, they get skipped.  Using nested
+  " allows triggering nested autocommands and allows airline to (re-)load
+  " properly.
+  autocmd BufWritePost $MYVIMRC nested source $MYVIMRC
+augroup END
+
+" The documap plugin defines the Nmap command, but that command cannot be used
+" until the plugin is loaded, which doesn't happen until after this file is
+" loaded.  Thus, we use the autocmd VimEnter event hook to allow loading this
+" file, then call the Nmap commands.  This could also have been done by placing
+" a file like ~/.vim/after/plugin/Nmap-commands.vim in place
+function! CallNmapCommands()
+  Nmap <silent>  ;v   [Edit .vimrc]          :next $MYVIMRC<CR>
+  Nmap           ;vv  [Edit .vim/plugin/...] :next ~/.vim/plugin/
+endfunction
+
+au VimEnter * call CallNmapCommands()
+nnoremap       ;vr  :source $MYVIMRC<CR>
+
+"=====[ VIM User Interface Settings ]==========================================
+
+" set wildmenu "Turn on WiLd menu
+"
+" Files to ignore for Command-T / other listings
+set wildignore+=*.o,*.obj,.git,public/stylesheets/**,public/cache/**
+
+
+" set cmdheight=2 "The commandbar height
+
+set nohidden      "
+" Disable this or Airline won't be able to update in a timely manner
+"set lazyredraw    " Don't redraw while executing macros
+set magic         " Set magic on, for regular expressions
+set mat=2         " How many tenths of a second to blink
+
+" No sound on errors
+" set noerrorbells
+" set novisualbell
+" set t_vb=
+" set tm=500
+
+" Highlight trailing/leading whitespace
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+\%#\@<!$/
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Colors and Fonts
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+syntax enable     " Enable syntax hl
+
+"set guifont=Inconsolata-dz\ for\ Powerline\ Medium\ 14
+set guifont=Cousine\ for\ Powerline\ 13
+"set guifont=Roboto\ Mono\ Medium\ for\ Powerline\ 15
+"set guifont=Roboto\ Mono\ Light\ for\ Powerline\ 15
+"set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 18
+
+" Solarized Colorscheme
+"set background=dark
+"let g:solarized_termtrans=1
+"let g:solarized_termcolors=256
+"let g:solarized_contrast="high"
+"let g:solarized_visibility="high"
+
+"colorscheme solarized
+colorscheme vividchalk
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Text, tab and indent related
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set textwidth=80
+set wrap                      " Wrap lines
+set linebreak                 " Wrap lines on chars in 'breakat'
+" Have to use Unicode value so that wrapped lines can be distinguished.
+" List of Unicode symbols available at:
+" http://www.fileformat.info/info/unicode/utf8test.htm
+" Currently using, via C-vuXXXX:
+" DOWNWARDS ARROW WITH TIP RIGHTWARDS        \u21b3 ↳
+" MIDDLE DOT                                 \u00B7 ·
+" NOT SIGN                                   \u00AC ¬
+" RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK \u00BB »
+let &showbreak="\ \ \ \u21b3"
+"set list listchars="tab:\u00bb\u00b7","trail:\u00b7",eol:\u00ac"
+let &listchars="tab:\u00bb\u00b7,trail:\u00b7,eol:\u00ac"
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => FileType specific items
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if has("autocmd")
+  " Syntax of languages that care about having tabs vs spaces
+  augroup filetype_make
+    autocmd!
+    autocmd FileType make setlocal tabstop=2 softtabstop=2 shiftwidth=2 noexpandtab
+  augroup END
+
+  augroup filetype_rust
+    autocmd!
+    autocmd FileType rs         setlocal ts=2 sts=2 sw=2 expandtab
+  augroup END
+endif
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => General Key Mappings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Display any embedded control characters - handy for cleanly indenting
+" HERE docs so they look pretty too
+nmap <leader>L :set list!<CR> " toggle invisible chars
+" Toggle line numbers
+nmap <leader>N :set number!<CR>
+" minipac update
+nmap <leader>pu :PackUpdate<CR>
+" minipac clean
+nmap <leader>pc :PackClean<CR>
+
+" ========================================================================
+" Session Manager Configuration
+" ========================================================================
+let g:session_autosave = 'no'
+"let g:session_autoload = 1
+let g:session_autoload = 'no'
+
+" ========================================================================
+" Airline Configuration
+" ========================================================================
+"let g:airline_theme            = 'behelit'
+let g:airline_theme            = 'badwolf'
+let g:airline_enable_branch    = 1
+let g:airline_enable_syntastic = 1
+let g:airline_powerline_fonts  = 1
+
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+
+" unicode symbols
+"let g:airline_left_sep = '»'
+"let g:airline_left_sep = '▶'
+"let g:airline_right_sep = '«'
+"let g:airline_right_sep = '◀'
+"let g:airline_symbols.crypt = '🔒'
+"let g:airline_symbols.linenr = '␊'
+"let g:airline_symbols.linenr = '␤'
+"let g:airline_symbols.linenr = '¶'
+"let g:airline_symbols.branch = '⎇'
+"let g:airline_symbols.paste = 'ρ'
+"let g:airline_symbols.paste = 'Þ'
+"let g:airline_symbols.paste = '∥'
+"let g:airline_symbols.whitespace = 'Ξ'
+
+" ========================================================================
+" Startup
+" ========================================================================
+" Open NERDTree on start
+" autocmd VimEnter * exe 'NERDTree' | wincmd l
+" Allow the NERDTree to be toggled by Ctrl-T:
+nnoremap <silent> <C-t> :NERDTreeToggle<CR>
+" Allow taglist to be toggled by Ctrl-A:
+nnoremap <silent> <C-a> :TlistToggle<CR>
+
+" Only apply to *.txt files
+" augroup HelpInTabs
+"   autocmd!
+"   autocmd BufEnter *.txt    call HelpInNewTab()
+" augroup END
+
+" Only apply to help file
+function! HelpInNewTab()
+  if &buftype == 'help'
+    " Convert the help window into a tab
+    execute "normal \<C-W>T"
+  endif
+endfunction
+
+"======[ PLUGIN SPECIFIC OPTIONS ]=============================================
+
+"======[ fugitive ]============================================================
+" These are "supposed to be" set in the after/plugin directory, but then
+" cross-platform synchronization would get even messier. So, we use the
+" autocmd VimEnter event instead to run the commands once all the plugins
+" are loaded.
+
+function! GitWriteIfPossible()
+  " Fast saving (via Fugitive) - if available
+  if !empty(FugitiveGitDir())
+    :Gwrite! %<cr>
+  else
+    :w! %
+  endif
+endfunction
+
+nnoremap <leader>w :Gwrite!<cr>
+" nnoremap <leader>w call GitWriteIfPossible()
+
+function! SetPluginOptionsNow()
+  nmap <leader>st  :Git status<cr>
+  nmap <leader>sn  :Git<cr>
+  nmap <leader>c   :Git commit<cr>
+  nmap <leader>gpm :Git push origin master<cr>
+endfunction
+
+au VimEnter * call SetPluginOptionsNow()
+
+"======[ rust ]================================================================
+" Use our buffer specific style only
+let g:rust_recommended_style = 0
+" cargo run
+nmap <leader>cr :Crun<CR>
+" cargo run with args
+nmap <leader>cra :Crun 
+" cargo test
+nmap <leader>ct :Ctest<CR>
+" cargo test with args
+nmap <leader>cta :Ctest 

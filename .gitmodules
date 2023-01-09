@@ -52,3 +52,6 @@
 [submodule ".vim/bundle/rust"]
 	path = .vim/bundle/rust
 	url = https://github.com/rust-lang/rust.vim.git
+[submodule "vim8_dir/pack/minpac/opt/minpac"]
+	path = vim8_dir/pack/minpac/opt/minpac
+	url = https://github.com/k-takata/minpac.git
