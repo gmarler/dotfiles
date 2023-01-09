@@ -21,6 +21,7 @@ call minpac#add('vim-airline/vim-airline')
 call minpac#add('vim-airline/vim-airline-themes')
 call minpac#add('altercation/vim-colors-solarized')
 call minpac#add('rust-lang/rust.vim')
+call minpac#add('easymotion/vim-easymotion')
 
 command! PackUpdate call minpac#update()
 command! PackClean call minpac#clean()
@@ -280,6 +281,8 @@ function! HelpInNewTab()
 endfunction
 
 "======[ PLUGIN SPECIFIC OPTIONS ]=============================================
+
+"======[ fugitive ]============================================================
 " These are "supposed to be" set in the after/plugin directory, but then
 " cross-platform synchronization would get even messier. So, we use the
 " autocmd VimEnter event instead to run the commands once all the plugins
@@ -305,3 +308,15 @@ function! SetPluginOptionsNow()
 endfunction
 
 au VimEnter * call SetPluginOptionsNow()
+
+"======[ rust ]================================================================
+" Use our buffer specific style only
+let g:rust_recommended_style = 0
+" cargo run
+nmap <leader>cr :Crun<CR>
+" cargo run with args
+nmap <leader>cra :Crun 
+" cargo test
+nmap <leader>ct :Ctest<CR>
+" cargo test with args
+nmap <leader>cta :Ctest 
