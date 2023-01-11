@@ -22,6 +22,7 @@ call minpac#add('vim-airline/vim-airline-themes')
 call minpac#add('altercation/vim-colors-solarized')
 call minpac#add('rust-lang/rust.vim')
 call minpac#add('easymotion/vim-easymotion')
+call minpac#add('sjl/gundo.vim')
 
 command! PackUpdate call minpac#update()
 command! PackClean call minpac#clean()
@@ -227,6 +228,12 @@ nmap <leader>N :set number!<CR>
 nmap <leader>pu :PackUpdate<CR>
 " minipac clean
 nmap <leader>pc :PackClean<CR>
+" Toggle Show Marks - but leave them off by default
+let g:showmarks_enable=0
+nmap <leader>Mo :ShowMarksToggle<CR> " toggle Show Marks
+" Toggle Gundo
+let g:gundo_prefer_python3 = 1
+nnoremap <F5> :GundoToggle<CR>
 
 " ========================================================================
 " Session Manager Configuration
@@ -333,22 +340,22 @@ let g:EasyMotion_do_mapping = 0 " Disable default mappings
 
 " Jump to anywhere you want with minimal keystrokes, with just one key binding.
 " `s{char}{label}`
-"nmap s <Plug>(easymotion-overwin-f)
+" nmap s <Plug>(easymotion-overwin-f)
 " or
 " `s{char}{char}{label}`
 " Need one more keystroke, but on average, it may be more comfortable.
-"nmap s <Plug>(easymotion-overwin-f2)
+nmap <Leader>s <Plug>(easymotion-overwin-f2)
 
-map <Leader>s <Plug>(easymotion-bd-f)
+" map <Leader>s <Plug>(easymotion-bd-f)
 
 " Turn on case-insensitive feature
 "let g:EasyMotion_smartcase = 1
 
-hi link EasyMotionTarget ErrorMsg
-hi link EasyMotionShade  Comment
-
-hi link EasyMotionTarget2First MatchParen
-hi link EasyMotionTarget2Second MatchParen
-
-hi link EasyMotionMoveHL Search
-hi link EasyMotionIncSearch Search
+"hi link EasyMotionTarget ErrorMsg
+"hi link EasyMotionShade  Comment
+"
+"hi link EasyMotionTarget2First MatchParen
+"hi link EasyMotionTarget2Second MatchParen
+"
+"hi link EasyMotionMoveHL Search
+"hi link EasyMotionIncSearch Search
