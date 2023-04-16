@@ -20,8 +20,10 @@ call minpac#add('tpope/vim-unimpaired')
 call minpac#add('vim-airline/vim-airline')
 call minpac#add('vim-airline/vim-airline-themes')
 call minpac#add('altercation/vim-colors-solarized')
+call minpac#add('https://github.com/vim-syntastic/syntastic.git')
 call minpac#add('rust-lang/rust.vim')
 call minpac#add('easymotion/vim-easymotion')
+call minpac#add('powerman/vim-plugin-AnsiEsc')
 
 command! PackUpdate call minpac#update()
 command! PackClean call minpac#clean()
@@ -91,6 +93,15 @@ nnoremap ; :                      " ?????
 set laststatus=2   " always display statusline
 " NOTE: this is overwritten by vim-airline later on
 set statusline=%F\ %m\ %{FugitiveStatusline()}\ %y%=%l,%c\ %P
+" Here we set up Syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 
 " Set to auto read when a file is changed from the outside
 set autoread
