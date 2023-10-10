@@ -9,7 +9,7 @@ YUM=/bin/yum
 ${YUM} install -y git vim wget
 
 ${LN} -s ~/dotfiles-BLP/vim8_dir ~/.vim
-cd ${DOTFILE_ROOT}
+cd ${DOTFILES_ROOT}
 git submodule init
 git submodule update
 
