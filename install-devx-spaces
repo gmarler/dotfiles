@@ -7,7 +7,7 @@ LN=/bin/ln
 MV=/bin/mv
 YUM=/bin/yum
 
-${YUM} install -y git vim wget
+${YUM} install -y git vim wget curl
 
 ${LN} -s ~/dotfiles-BLP/vim8_dir ~/.vim
 cd ${DOTFILES_ROOT}
@@ -19,3 +19,8 @@ git submodule update
 ${LN} -s ~/dotfiles-BLP/kshrc ~/.kshrc
 ${MV} ~/.bashrc ~/.bashrc-BAD
 ${LN} -s ~/dotfiles-BLP/bashrc ~/.bashrc
+
+cd
+
+# Set up Rust/Aya dev environment
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
