@@ -24,3 +24,10 @@ cd
 
 # Set up Rust/Aya dev environment
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+mkdir ~/.cargo
+cp ~/dotfiles-BLP/cargo-config.toml ~/.cargo/config.toml
+cat << EOF >> ~/.gitconfig
+
+[http "https://crates.dev.bloomberg.com/"]
+    proxy = http://bproxy.tdmz1.bloomberg.com:80
+EOF
