@@ -2,3 +2,11 @@
 
 echo "INSTALLING dotfiles for DevX Spaces!"
 
+DOTFILES_ROOT="/root/dotfiles-BLP"
+LN=/bin/ln
+YUM=/bin/yum
+
+${YUM} install -y git vim wget
+
+${LN} -s ~/dotfiles-BLP/vim8_dir ~/.vim
+
