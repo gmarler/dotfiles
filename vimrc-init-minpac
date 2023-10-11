@@ -1,0 +1,18 @@
+packadd minpac
+
+call minpac#init()
+call minpac#add('k-takata/minpac', {'type': 'opt'})
+call minpac#add('preservim/nerdtree')
+call minpac#add('tpope/vim-fugitive')
+call minpac#add('tpope/vim-vividchalk')
+call minpac#add('tpope/vim-unimpaired')
+call minpac#add('vim-airline/vim-airline')
+call minpac#add('vim-airline/vim-airline-themes')
+call minpac#add('altercation/vim-colors-solarized')
+call minpac#add('https://github.com/vim-syntastic/syntastic.git')
+call minpac#add('rust-lang/rust.vim')
+call minpac#add('easymotion/vim-easymotion')
+call minpac#add('sjl/gundo.vim')
+call minpac#add('powerman/vim-plugin-AnsiEsc')
+
+
