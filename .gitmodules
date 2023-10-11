@@ -55,3 +55,6 @@
 [submodule "vim8_dir/pack/minpac/opt/minpac"]
 	path = vim8_dir/pack/minpac/opt/minpac
 	url = https://github.com/k-takata/minpac.git
+[submodule "vim8_dir/pack/minpac/start/fugitive"]
+	path = vim8_dir/pack/minpac/start/fugitive
+	url = https://github.com/tpope/vim-fugitive
