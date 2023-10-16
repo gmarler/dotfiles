@@ -222,6 +222,14 @@ fi
 # Admin Server aliases
 alias rw="rwin -s"
 
+# node-proxy aliases
+alias nodeproxy_bbvpn="cd ~/gitwork/nodeproxy &&\
+ npx bb-nodeproxy -D --wpadUrl http://wpad.bloomberg.com/wpad-la.dat\
+ --proxyAddress 0.0.0.0 --proxyPort 8888"
+alias nodeproxy="cd ~/gitwork/nodeproxy &&\
+ npx bb-nodeproxy -D \
+ --proxyAddress 0.0.0.0 --proxyPort 8888"
+
 # If the script exists and is executable, create an alias to get
 # web server headers
 for path in ${PATH//:/ }; do

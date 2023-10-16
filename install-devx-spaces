@@ -44,3 +44,14 @@ cat << EOF >> ~/.gitconfig
 [http "https://crates.dev.bloomberg.com/"]
     proxy = http://bproxy.tdmz1.bloomberg.com:80
 EOF
+
+# Set up tmux
+if [[ ! -d ${HOME}/.config ]]; then
+  ${MKDIR} ${HOME}/.config
+fi
+if [[ ! -d ${HOME}/.config/tmux ]]; then
+  ${MKDIR} ${HOME}/.config/tmux
+fi
+[[ ! -f ${HOME}/.config/tmux/tmux.conf ]] &&\
+  cp ${DOTFILES_ROOT}/tmux.conf ${HOME}/.config/tmux/tmux.conf
+# Copy needed Nerd Fonts
