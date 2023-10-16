@@ -55,3 +55,8 @@ fi
 [[ ! -f ${HOME}/.config/tmux/tmux.conf ]] &&\
   cp ${DOTFILES_ROOT}/tmux.conf ${HOME}/.config/tmux/tmux.conf
 # Copy needed Nerd Fonts
+[[ ! -d ${HOME}/.local ]] && ${MKDIR} ${HOME}/.local
+[[ ! -d ${HOME}/.local/share ]] && ${MKDIR} ${HOME}/.local/share
+[[ ! -d ${HOME}/.local/share/fonts ]] && ${MKDIR} ${HOME}/.local/share/fonts
+cp ${DOTFILE_ROOT}/nerd-fonts/* ${HOME}/.local/share/fonts
+
