@@ -1,0 +1,11 @@
+[net]
+[registries]
+crates-bbg = { index = "sparse+https://crates.dev.bloomberg.com/index/" }
+
+[source.crates-io-http]
+registry = "sparse+https://crates.dev.bloomberg.com/crates-io/index/"
+
+[source.crates-io]
+replace-with = "crates-io-http"
+
+

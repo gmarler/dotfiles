@@ -1,0 +1,62 @@
+#!/bin/bash
+
+echo "INSTALLING dotfiles for DevX Spaces!"
+
+DOTFILES_ROOT="/root/dotfiles-BLP"
+LN=/bin/ln
+MV=/bin/mv
+CHMOD=/bin/chmod
+MKDIR=/bin/mkdir
+YUM=/bin/yum
+
+${YUM} install -y git vim wget curl openssl-devel bpftool
+
+${LN} -s ~/dotfiles-BLP/vim8_dir ~/.vim
+cd ${DOTFILES_ROOT}
+git submodule init
+git submodule update
+
+# vim "+PackUpdate" "+q" "+:q"
+
+${LN} -s ~/dotfiles-BLP/kshrc ~/.kshrc
+if [[ ! -f ~/.bashrc-BAD ]]; then
+  ${MV} ~/.bashrc ~/.bashrc-BAD
+  ${LN} -s ~/dotfiles-BLP/bashrc ~/.bashrc
+fi
+
+cd
+
+# Set up Rust/Aya dev environment
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o ~/rustup
+${CHMOD} +x ~/rustup
+${MKDIR} ~/.cargo
+cp ~/dotfiles-BLP/cargo-config.toml ~/.cargo/config.toml
+~/rustup -y
+source "$HOME/.cargo/env"
+rustup install stable
+rustup toolchain install nightly --component rust-src
+cargo install bpf-linker
+cargo install cargo-generate
+
+
+cat << EOF >> ~/.gitconfig
+
+[http "https://crates.dev.bloomberg.com/"]
+    proxy = http://bproxy.tdmz1.bloomberg.com:80
+EOF
+
+# Set up tmux
+if [[ ! -d ${HOME}/.config ]]; then
+  ${MKDIR} ${HOME}/.config
+fi
+if [[ ! -d ${HOME}/.config/tmux ]]; then
+  ${MKDIR} ${HOME}/.config/tmux
+fi
+[[ ! -f ${HOME}/.config/tmux/tmux.conf ]] &&\
+  cp ${DOTFILES_ROOT}/tmux.conf ${HOME}/.config/tmux/tmux.conf
+# Copy needed Nerd Fonts
+[[ ! -d ${HOME}/.local ]] && ${MKDIR} ${HOME}/.local
+[[ ! -d ${HOME}/.local/share ]] && ${MKDIR} ${HOME}/.local/share
+[[ ! -d ${HOME}/.local/share/fonts ]] && ${MKDIR} ${HOME}/.local/share/fonts
+cp ${DOTFILE_ROOT}/nerd-fonts/* ${HOME}/.local/share/fonts
+

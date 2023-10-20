@@ -14,14 +14,17 @@ packadd minpac
 call minpac#init()
 call minpac#add('k-takata/minpac', {'type': 'opt'})
 call minpac#add('preservim/nerdtree')
-call minpac#add('https://tpope.io/vim/fugitive')
+call minpac#add('tpope/vim-fugitive')
 call minpac#add('tpope/vim-vividchalk')
 call minpac#add('tpope/vim-unimpaired')
 call minpac#add('vim-airline/vim-airline')
 call minpac#add('vim-airline/vim-airline-themes')
 call minpac#add('altercation/vim-colors-solarized')
+call minpac#add('https://github.com/vim-syntastic/syntastic.git')
 call minpac#add('rust-lang/rust.vim')
 call minpac#add('easymotion/vim-easymotion')
+call minpac#add('sjl/gundo.vim')
+call minpac#add('powerman/vim-plugin-AnsiEsc')
 
 command! PackUpdate call minpac#update()
 command! PackClean call minpac#clean()
@@ -91,6 +94,15 @@ nnoremap ; :                      " ?????
 set laststatus=2   " always display statusline
 " NOTE: this is overwritten by vim-airline later on
 set statusline=%F\ %m\ %{FugitiveStatusline()}\ %y%=%l,%c\ %P
+" Here we set up Syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 
 " Set to auto read when a file is changed from the outside
 set autoread
@@ -114,18 +126,9 @@ augroup VimReload
   autocmd BufWritePost $MYVIMRC nested source $MYVIMRC
 augroup END
 
-" The documap plugin defines the Nmap command, but that command cannot be used
-" until the plugin is loaded, which doesn't happen until after this file is
-" loaded.  Thus, we use the autocmd VimEnter event hook to allow loading this
-" file, then call the Nmap commands.  This could also have been done by placing
-" a file like ~/.vim/after/plugin/Nmap-commands.vim in place
-function! CallNmapCommands()
-  Nmap <silent>  ;v   [Edit .vimrc]          :next $MYVIMRC<CR>
-  Nmap           ;vv  [Edit .vim/plugin/...] :next ~/.vim/plugin/
-endfunction
-
-au VimEnter * call CallNmapCommands()
-nnoremap       ;vr  :source $MYVIMRC<CR>
+nnoremap       <leader>ev  :split $MYVIMRC<CR>
+nnoremap       <leader>vv  :next ~/.vim/plugin/
+nnoremap       <leader>rv  :source $MYVIMRC<CR>
 
 "=====[ VIM User Interface Settings ]==========================================
 
@@ -202,9 +205,25 @@ if has("autocmd")
     autocmd FileType make setlocal tabstop=2 softtabstop=2 shiftwidth=2 noexpandtab
   augroup END
 
+  augroup filetype_yaml
+    autocmd!
+    autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+  augroup END
+
+  " Personal preferences
+  augroup filetype_python
+    autocmd!
+    autocmd FileType python     setlocal ts=2 sts=2 sw=2 expandtab
+  augroup END
   augroup filetype_rust
     autocmd!
     autocmd FileType rs         setlocal ts=2 sts=2 sw=2 expandtab
+  augroup END
+
+  " Git specific preferences
+  augroup filetype_gitcommit
+    autocmd!
+    autocmd FileType gitcommit  setlocal textwidth=72 ts=2 sts=2 sw=2 expandtab
   augroup END
 endif
 
@@ -220,6 +239,12 @@ nmap <leader>N :set number!<CR>
 nmap <leader>pu :PackUpdate<CR>
 " minipac clean
 nmap <leader>pc :PackClean<CR>
+" Toggle Show Marks - but leave them off by default
+let g:showmarks_enable=0
+nmap <leader>Mo :ShowMarksToggle<CR> " toggle Show Marks
+" Toggle Gundo
+let g:gundo_prefer_python3 = 1
+nnoremap <F5> :GundoToggle<CR>
 
 " ========================================================================
 " Session Manager Configuration
@@ -316,8 +341,33 @@ let g:rust_recommended_style = 0
 " cargo run
 nmap <leader>cr :Crun<CR>
 " cargo run with args
-nmap <leader>cra :Crun 
+nmap <leader>cra :Crun<Space>
 " cargo test
 nmap <leader>ct :Ctest<CR>
 " cargo test with args
-nmap <leader>cta :Ctest 
+nmap <leader>cta :Ctest<Space>
+
+"======[ easymotion ]==========================================================
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
+
+" Jump to anywhere you want with minimal keystrokes, with just one key binding.
+" `s{char}{label}`
+" nmap s <Plug>(easymotion-overwin-f)
+" or
+" `s{char}{char}{label}`
+" Need one more keystroke, but on average, it may be more comfortable.
+nmap <Leader>s <Plug>(easymotion-overwin-f2)
+
+" map <Leader>s <Plug>(easymotion-bd-f)
+
+" Turn on case-insensitive feature
+"let g:EasyMotion_smartcase = 1
+
+"hi link EasyMotionTarget ErrorMsg
+"hi link EasyMotionShade  Comment
+"
+"hi link EasyMotionTarget2First MatchParen
+"hi link EasyMotionTarget2Second MatchParen
+"
+"hi link EasyMotionMoveHL Search
+"hi link EasyMotionIncSearch Search
