@@ -481,14 +481,15 @@ endfunction
 
 function! GitWriteIfPossible()
   " Fast saving (via Fugitive) - if available
-  if exists(":Gwrite")
-    :Gwrite! %<cr>
+  if exists(":Gwrite") == 2
+    :Gwrite! %<CR>
   else
-    :w!<cr>
+    :w! %<CR>
   endif
 endfunction
 
-nnoremap <leader>w :Gwrite!<cr>
+" nnoremap <leader>w :Gwrite!<cr>
+nnoremap <leader>w call GitWriteIfPossible()<CR>
 
 function! SetPluginOptionsNow()
 
