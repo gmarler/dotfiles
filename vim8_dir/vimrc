@@ -103,6 +103,9 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+let g:syntastic_mode_map = { 'mode': 'passive',
+                           \ 'active_filetypes': ['python'],
+                           \ 'passive_filetypes': ['rust', 'javascript'] }
 
 " Set to auto read when a file is changed from the outside
 set autoread
@@ -370,3 +373,17 @@ nmap <Leader>s <Plug>(easymotion-overwin-f2)
 "
 "hi link EasyMotionMoveHL Search
 "hi link EasyMotionIncSearch Search
+
+"======[ syntastic ]==========================================================
+function! ToggleSyntastic()
+  for i in range(1, winnr('$'))
+    let bnum = winbufnr(i)
+    if getbufvar(bnum, '&buftype') == 'quickfix'
+      lclose
+      return
+    endif
+  endfor
+  SyntasticCheck
+endfunction
+
+nnoremap <F8> :call ToggleSyntastic()<CR>
