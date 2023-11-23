@@ -80,8 +80,8 @@ done
 # ulimit -S -c 0 > /dev/null 2>&1
 
 # Set various aspects of the bash history
-export HISTSIZE=5000          # Num. of commands in history stack in memory
-export HISTFILESIZE=5000      # Num. of commands in history file
+export HISTSIZE=500000        # Num. of commands in history stack in memory
+export HISTFILESIZE=500000    # Num. of commands in history file
 #export HISTCONTROL=ignoreboth # bash < 3, omit dups & lines starting with spaces
 export HISTCONTROL='erasedups:ignoredups:ignorespace'
 export HISTIGNORE='&:[ ]*'    # bash >= 3, omit dups & lines starting with spaces
@@ -90,7 +90,8 @@ shopt -s histappend           # Append rather than overwrite history on exit
 shopt -q -s cdspell           # Auto-fix minor typos in interactive use of 'cd'
 shopt -q -s checkwinsize      # Update the values of LINES and COLUMNS
 shopt -q -s cmdhist           # Make multiline commands 1 line in history
-set -o notify   # (or set -b) # Immediate notif. of background job termination.
+set -o notify                 # (or set -b) # Immediate notif. of background
+                              # job termination.
 # set -o ignoreeof              # Don't let Ctrl-D exit the shell
 set -o vi                     # Vi command line editing mode
 
@@ -130,7 +131,7 @@ done
 
 # Set other less & editor prefs (overkill)
 #export LESS="--LONG-PROMPT --LINE-NUMBERS --ignore-case --QUIET --no-init"
-export LESS="--LONG-PROMPT --ignore-case --QUIET --no-init"
+export LESS="--LONG-PROMPT --ignore-case --QUIET --no-init -R"
 export VISUAL='vi'  # Set a default that should always work
 # We'd rather use 'type -P' here, but that was added in bash-2.05b and we use
 # systems we don't control with versions older than that.  We can't easily
@@ -217,18 +218,32 @@ if [[ "{$UNAME_S}" == "Linux" ]]; then
   alias meminfo='free -m -l -t'   # See how much memory you have left
   alias whatpid='ps auwx | grep'  # Get PID and process info
   alias port='netstat -tulanp'    # Show which apps are connecting to the network
+
+  # Ubuntu Packaging (Debian) specific
+  if test -x /usr/bin/lsb_release; then
+    if /usr/bin/lsb_release -i | grep -q "Ubuntu"; then
+      export DEBFULLNAME="Gordon Marler"
+      export DEBEMAIL="gmarler@bloomberg.net"
+      # Quilt related
+      alias dquilt="quilt --quiltrc=${HOME}/.quiltrc-dpkg"
+      complete -F _quilt_completion -o filenames dquilt
+    fi
+  fi
 fi
 
 # Admin Server aliases
 alias rw="rwin -s"
 
-# node-proxy aliases
-alias nodeproxy_bbvpn="cd ~/gitwork/nodeproxy &&\
- npx bb-nodeproxy -D --wpadUrl http://wpad.bloomberg.com/wpad-la.dat\
- --proxyAddress 0.0.0.0 --proxyPort 8888"
-alias nodeproxy="cd ~/gitwork/nodeproxy &&\
- npx bb-nodeproxy -D \
- --proxyAddress 0.0.0.0 --proxyPort 8888"
+# MacOS BBVPN host(s)
+if [[ "{$UNAME_S}" == "Darwin" ]]; then
+  # node-proxy aliases
+  alias nodeproxy_bbvpn="cd ~/gitwork/nodeproxy &&\
+   npx bb-nodeproxy -D --wpadUrl http://wpad.bloomberg.com/wpad-la.dat\
+   --proxyAddress 0.0.0.0 --proxyPort 8888"
+  alias nodeproxy="cd ~/gitwork/nodeproxy &&\
+   npx bb-nodeproxy -D \
+   --proxyAddress 0.0.0.0 --proxyPort 8888"
+fi
 
 # If the script exists and is executable, create an alias to get
 # web server headers
@@ -242,20 +257,21 @@ parse_git_branch() {
      git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
 
+export BASH_SILENCE_DEPRECATION_WARNING=1
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+
+. "$HOME/.cargo/env"
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
 # Custom local overrides
 if [[ -f "$HOME/.bashrc.custom" ]]; then
   echo "Sourcing Custom .bashrc.custom"
   source $HOME/.bashrc.custom
 fi
-
-# Ubuntu Packaging (Debian) specific
-if test -x /usr/bin/lsb_release; then
-  if /usr/bin/lsb_release -i | grep -q "Ubuntu"; then
-    export DEBFULLNAME="Gordon Marler"
-    export DEBEMAIL="gmarler@bloomberg.net"
-    # Quilt related
-    alias dquilt="quilt --quiltrc=${HOME}/.quiltrc-dpkg"
-    complete -F _quilt_completion -o filenames dquilt
-  fi
-fi
-

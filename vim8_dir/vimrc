@@ -20,11 +20,29 @@ call minpac#add('tpope/vim-unimpaired')
 call minpac#add('vim-airline/vim-airline')
 call minpac#add('vim-airline/vim-airline-themes')
 call minpac#add('altercation/vim-colors-solarized')
-call minpac#add('https://github.com/vim-syntastic/syntastic.git')
-call minpac#add('rust-lang/rust.vim')
+" call minpac#add('https://github.com/vim-syntastic/syntastic.git')
 call minpac#add('easymotion/vim-easymotion')
 call minpac#add('sjl/gundo.vim')
 call minpac#add('powerman/vim-plugin-AnsiEsc')
+
+call minpac#add('airblade/vim-rooter')
+call minpac#add('junegunn/fzf', { 'dir': '~/.fzf', 'do': { -> fzf#install() } })
+call minpac#add('junegunn/fzf.vim')
+call minpac#add('dense-analysis/ale')
+
+" Syntactic language support
+call minpac#add('cespare/vim-toml', {'branch': 'main'})
+call minpac#add('stephpy/vim-yaml')
+call minpac#add('rust-lang/rust.vim')
+call minpac#add('rhysd/vim-clang-format')
+call minpac#add('godlygeek/tabular')
+call minpac#add('plasticboy/vim-markdown')
+
+" Language Server Protocol client setup
+call minpac#add('prabirshrestha/vim-lsp')
+call minpac#add('mattn/vim-lsp-settings')
+call minpac#add('prabirshrestha/asyncomplete.vim')
+call minpac#add('prabirshrestha/asyncomplete-lsp.vim')
 
 command! PackUpdate call minpac#update()
 command! PackClean call minpac#clean()
@@ -94,18 +112,18 @@ nnoremap ; :                      " ?????
 set laststatus=2   " always display statusline
 " NOTE: this is overwritten by vim-airline later on
 set statusline=%F\ %m\ %{FugitiveStatusline()}\ %y%=%l,%c\ %P
-" Here we set up Syntastic
+" Here we set up Syntastic (being phased out)
 set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_mode_map = { 'mode': 'passive',
-                           \ 'active_filetypes': ['python'],
-                           \ 'passive_filetypes': ['rust', 'javascript'] }
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 0
+" let g:syntastic_mode_map = { 'mode': 'passive',
+"                            \ 'active_filetypes': ['python'],
+"                            \ 'passive_filetypes': ['rust', 'javascript'] }
 
 " Set to auto read when a file is changed from the outside
 set autoread
@@ -220,7 +238,7 @@ if has("autocmd")
   augroup END
   augroup filetype_rust
     autocmd!
-    autocmd FileType rs         setlocal ts=2 sts=2 sw=2 expandtab
+    autocmd FileType rs         setlocal ts=4 sts=4 sw=4 expandtab
   augroup END
 
   " Git specific preferences
@@ -339,8 +357,8 @@ endfunction
 au VimEnter * call SetPluginOptionsNow()
 
 "======[ rust ]================================================================
-" Use our buffer specific style only
-let g:rust_recommended_style = 0
+" Use our buffer specific style only - DISABLED FOR NOW
+" let g:rust_recommended_style = 0
 " cargo run
 nmap <leader>cr :Crun<CR>
 " cargo run with args
@@ -349,6 +367,12 @@ nmap <leader>cra :Crun<Space>
 nmap <leader>ct :Ctest<CR>
 " cargo test with args
 nmap <leader>cta :Ctest<Space>
+
+let g:rustfmt_autosave = 1
+let g:rustfmt_emit_files = 1
+let g:rustfmt_fail_silently = 0
+" Linux only?  Or not?
+" let g:rust_clip_command = 'xclip -selection clipboard'
 
 "======[ easymotion ]==========================================================
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
@@ -376,15 +400,15 @@ nmap <Leader>s <Plug>(easymotion-overwin-f2)
 "hi link EasyMotionIncSearch Search
 
 "======[ syntastic ]==========================================================
-function! ToggleSyntastic()
-  for i in range(1, winnr('$'))
-    let bnum = winbufnr(i)
-    if getbufvar(bnum, '&buftype') == 'quickfix'
-      lclose
-      return
-    endif
-  endfor
-  SyntasticCheck
-endfunction
-
-nnoremap <F8> :call ToggleSyntastic()<CR>
+"  function! ToggleSyntastic()
+"    for i in range(1, winnr('$'))
+"      let bnum = winbufnr(i)
+"      if getbufvar(bnum, '&buftype') == 'quickfix'
+"        lclose
+"        return
+"      endif
+"    endfor
+"    SyntasticCheck
+"  endfunction
+"  
+"  nnoremap <F8> :call ToggleSyntastic()<CR>
