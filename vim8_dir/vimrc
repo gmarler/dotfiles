@@ -410,5 +410,5 @@ nmap <Leader>s <Plug>(easymotion-overwin-f2)
 "    endfor
 "    SyntasticCheck
 "  endfunction
-"  
+"
 "  nnoremap <F8> :call ToggleSyntastic()<CR>

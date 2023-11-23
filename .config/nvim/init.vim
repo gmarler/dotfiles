@@ -206,6 +206,12 @@ autocmd CursorHold,CursorHoldI *.rs :lua require'lsp_extensions'.inlay_hints{ on
 
 
 " ===== [PLUGIN SETTINGS] =============================================================
+
+" =====[ NERDTree ]======================================
+" Allow the NERDTree to be toggled by Ctrl-T:
+nnoremap <silent> <C-t> :NERDTreeToggle<CR>
+
+" =====[ securemodelines ]===============================
 let g:secure_modelines_allowed_items = [
                 \ "textwidth",   "tw",
                 \ "softtabstop", "sts",
@@ -219,7 +225,7 @@ let g:secure_modelines_allowed_items = [
                 \ "colorcolumn"
                 \ ]
 
-" Lightline
+" =====[ Lightline ]===============================
 let g:lightline = {
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
@@ -235,6 +241,45 @@ let g:lightline = {
 function! LightlineFilename()
   return expand('%:t') !=# '' ? @% : '[No Name]'
 endfunction
+
+" =====[ fugitive ]======================================
+" These are "supposed to be" set in the after/plugin directory, but then
+" cross-platform synchronization would get even messier. So, we use the
+" autocmd VimEnter event instead to run the commands once all the plugins
+" are loaded.
+
+function! GitWriteIfPossible()
+  " Fast saving (via Fugitive) - if available
+  if !empty(FugitiveGitDir())
+    :Gwrite! %<cr>
+  else
+    :w! %
+  endif
+endfunction
+
+nnoremap <leader>w :Gwrite!<cr>
+" nnoremap <leader>w call GitWriteIfPossible()
+
+function! SetPluginOptionsNow()
+  nmap <leader>st  :Git status<cr>
+  nmap <leader>sn  :Git<cr>
+  nmap <leader>c   :Git commit<cr>
+  nmap <leader>gpm :Git push origin master<cr>
+endfunction
+
+au VimEnter * call SetPluginOptionsNow()
+
+
+" =====[ sneak ]======================================
+" let g:sneak#s_next = 1
+" Make sneak act more like EasyMotion, or even ACEJump
+" let g:sneak#label = 1
+nnoremap <silent> s :<C-U>call sneak#wrap('',           1, 0, 2, 2)<CR>
+nnoremap <silent> S :<C-U>call sneak#wrap('',           1, 1, 2, 2)<CR>
+xnoremap <silent> s :<C-U>call sneak#wrap(visualmode(), 1, 0, 2, 2)<CR>
+xnoremap <silent> S :<C-U>call sneak#wrap(visualmode(), 1, 1, 2, 2)<CR>
+onoremap <silent> s :<C-U>call sneak#wrap(v:operator,   1, 0, 2, 2)<CR>
+onoremap <silent> S :<C-U>call sneak#wrap(v:operator,   1, 1, 2, 2)<CR>
 
 " from http://sheerun.net/2014/03/21/how-to-boost-your-vim-productivity/
 if executable('ag')
