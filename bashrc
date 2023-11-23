@@ -249,6 +249,12 @@ if [[ "${UNAME_S}" == "Darwin" ]]; then
   alias iso8601="gdate '+%Y-%m-%dT%H:%M:%S%z'"  # ISO 8601 time
   alias now="gdate       '+%F %T %Z(%z)'"       # More readable ISO 8601 local
   alias utc="gdate --utc '+%F %T %Z(%z)'"       # More readable ISO 8601 UTC
+  # HomeBrew Bash completions, if present
+  if [[ -d /opt/homebrew/etc/bash_completion.d ]]; then
+    for bcfile in /opt/homebrew/etc/bash_completion.d/*; do
+      [[ -f "$bcfile" ]] && . $bcfile
+    done
+  fi
 fi
 
 # If the script exists and is executable, create an alias to get
