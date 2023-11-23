@@ -202,7 +202,7 @@ alias iso8601="date '+%Y-%m-%dT%H:%M:%S%z'"  # ISO 8601 time
 alias now="date       '+%F %T %Z(%z)'"       # More readable ISO 8601 local
 alias utc="date --utc '+%F %T %Z(%z)'"       # More readable ISO 8601 UTC
 
-if [[ "{$UNAME_S}" == "Linux" ]]; then
+if [[ "${UNAME_S}" == "Linux" ]]; then
   alias gc='xsel -b'           # "GetClip" get stuff from right "X" clipboard
   alias pc='xsel -bi'          # "PutClip" put stuff to right "X" clipboard
   alias cal='cal -M'           # Start calendars on Monday
@@ -235,7 +235,7 @@ fi
 alias rw="rwin -s"
 
 # MacOS BBVPN host(s)
-if [[ "{$UNAME_S}" == "Darwin" ]]; then
+if [[ "${UNAME_S}" == "Darwin" ]]; then
   # node-proxy aliases
   alias nodeproxy_bbvpn="cd ~/gitwork/nodeproxy &&\
    npx bb-nodeproxy -D --wpadUrl http://wpad.bloomberg.com/wpad-la.dat\
@@ -243,6 +243,12 @@ if [[ "{$UNAME_S}" == "Darwin" ]]; then
   alias nodeproxy="cd ~/gitwork/nodeproxy &&\
    npx bb-nodeproxy -D \
    --proxyAddress 0.0.0.0 --proxyPort 8888"
+  # Updated PATH settings for MacOS/Brew:
+  export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
+  # Date/time alias updates to use GNU coreutils gdate
+  alias iso8601="gdate '+%Y-%m-%dT%H:%M:%S%z'"  # ISO 8601 time
+  alias now="gdate       '+%F %T %Z(%z)'"       # More readable ISO 8601 local
+  alias utc="gdate --utc '+%F %T %Z(%z)'"       # More readable ISO 8601 UTC
 fi
 
 # If the script exists and is executable, create an alias to get
