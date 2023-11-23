@@ -28,7 +28,6 @@ call minpac#add('powerman/vim-plugin-AnsiEsc')
 call minpac#add('airblade/vim-rooter')
 call minpac#add('junegunn/fzf', { 'dir': '~/.fzf', 'do': { -> fzf#install() } })
 call minpac#add('junegunn/fzf.vim')
-call minpac#add('dense-analysis/ale')
 
 " Syntactic language support
 call minpac#add('cespare/vim-toml', {'branch': 'main'})
