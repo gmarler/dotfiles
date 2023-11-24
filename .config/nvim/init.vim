@@ -10,7 +10,8 @@ call plug#begin()
 " VIM enhancements
 Plug 'ciaranm/securemodelines'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'justinmk/vim-sneak'
+" Plug 'justinmk/vim-sneak'
+Plug 'easymotion/vim-easymotion'
 
 " GUI enhancements
 Plug 'itchyny/lightline.vim'
@@ -271,15 +272,17 @@ au VimEnter * call SetPluginOptionsNow()
 
 
 " =====[ sneak ]======================================
+" For now, we use easymotion instead, see lower down...
 " let g:sneak#s_next = 1
 " Make sneak act more like EasyMotion, or even ACEJump
 " let g:sneak#label = 1
-nnoremap <silent> s :<C-U>call sneak#wrap('',           1, 0, 2, 2)<CR>
-nnoremap <silent> S :<C-U>call sneak#wrap('',           1, 1, 2, 2)<CR>
-xnoremap <silent> s :<C-U>call sneak#wrap(visualmode(), 1, 0, 2, 2)<CR>
-xnoremap <silent> S :<C-U>call sneak#wrap(visualmode(), 1, 1, 2, 2)<CR>
-onoremap <silent> s :<C-U>call sneak#wrap(v:operator,   1, 0, 2, 2)<CR>
-onoremap <silent> S :<C-U>call sneak#wrap(v:operator,   1, 1, 2, 2)<CR>
+" Manual configuration for sneak, replacing all above
+" nnoremap <silent> s :<C-U>call sneak#wrap('',           1, 0, 2, 2)<CR>
+" nnoremap <silent> S :<C-U>call sneak#wrap('',           1, 1, 2, 2)<CR>
+" xnoremap <silent> s :<C-U>call sneak#wrap(visualmode(), 1, 0, 2, 2)<CR>
+" xnoremap <silent> S :<C-U>call sneak#wrap(visualmode(), 1, 1, 2, 2)<CR>
+" onoremap <silent> s :<C-U>call sneak#wrap(v:operator,   1, 0, 2, 2)<CR>
+" onoremap <silent> S :<C-U>call sneak#wrap(v:operator,   1, 1, 2, 2)<CR>
 
 " from http://sheerun.net/2014/03/21/how-to-boost-your-vim-productivity/
 if executable('ag')
@@ -289,6 +292,32 @@ if executable('rg')
   set grepprg=rg\ --no-heading\ --vimgrep
   set grepformat=%f:%l:%c:%m
 endif
+
+"======[ easymotion ]==========================================================
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
+
+" Jump to anywhere you want with minimal keystrokes, with just one key binding.
+" `s{char}{label}`
+" nmap s <Plug>(easymotion-overwin-f)
+nmap <Leader>s <Plug>(easymotion-overwin-f)
+" or
+" `s{char}{char}{label}`
+" Need one more keystroke, but on average, it may be more comfortable.
+" nmap <Leader>s <Plug>(easymotion-overwin-f2)
+
+" map <Leader>s <Plug>(easymotion-bd-f)
+
+" Turn on case-insensitive feature
+"let g:EasyMotion_smartcase = 1
+
+"hi link EasyMotionTarget ErrorMsg
+"hi link EasyMotionShade  Comment
+"
+"hi link EasyMotionTarget2First MatchParen
+"hi link EasyMotionTarget2Second MatchParen
+"
+"hi link EasyMotionMoveHL Search
+"hi link EasyMotionIncSearch Search
 
 " Javascript
 let javaScript_fold=0
@@ -331,7 +360,6 @@ set cursorline                    " Highlight line cursor is on
 
 " Toggle auto-indent for pasting into the editor
 set pastetoggle=<F2>
-let g:sneak#s_next = 1
 let g:vim_markdown_new_list_item_indent = 0
 let g:vim_markdown_auto_insert_bullets = 0
 let g:vim_markdown_frontmatter = 1
