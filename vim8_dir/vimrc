@@ -134,23 +134,11 @@ let g:mapleader = ","
 " For file type local mappings, use the maplocalleader
 let maplocalleader = "\\"
 
-"=====[ Edit and auto-update .vimrc and plugins ]==============================
-
-augroup VimReload
-  autocmd!
-  " The reason for using nested here is due to also using vim-airline.  The
-  " process of loading airline triggers some autocommands, but since you're in
-  " the middle of executing an autocommand, they get skipped.  Using nested
-  " allows triggering nested autocommands and allows airline to (re-)load
-  " properly.
-  autocmd BufWritePost $MYVIMRC nested source $MYVIMRC
-augroup END
-
-nnoremap       <leader>ev  :split $MYVIMRC<CR>
-nnoremap       <leader>vv  :next ~/.vim/plugin/
-nnoremap       <leader>rv  :source $MYVIMRC<CR>
-
 "=====[ VIM User Interface Settings ]==========================================
+
+" Sane splits
+set splitright
+set splitbelow
 
 " set wildmenu "Turn on WiLd menu
 "
@@ -182,6 +170,23 @@ cnoremap %s/ %sm/
 " Highlight trailing/leading whitespace
 highlight ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace /\s\+\%#\@<!$/
+
+"=====[ Edit and auto-update .vimrc and plugins ]==============================
+
+augroup VimReload
+  autocmd!
+  " The reason for using nested here is due to also using vim-airline.  The
+  " process of loading airline triggers some autocommands, but since you're in
+  " the middle of executing an autocommand, they get skipped.  Using nested
+  " allows triggering nested autocommands and allows airline to (re-)load
+  " properly.
+  autocmd BufWritePost $MYVIMRC nested source $MYVIMRC
+augroup END
+
+nnoremap       <leader>ev  :split $MYVIMRC<CR>
+nnoremap       <leader>vv  :next ~/.vim/plugin/
+nnoremap       <leader>rv  :source $MYVIMRC<CR>
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
