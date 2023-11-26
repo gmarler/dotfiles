@@ -166,6 +166,13 @@ set nohidden      "
 set magic         " Set magic on, for regular expressions
 set mat=2         " How many tenths of a second to blink
 
+" Very magic by default
+" TODO: look at above magic setting and make sure no conflicts with below
+nnoremap ? ?\v
+nnoremap / /\v
+cnoremap %s/ %sm/
+
+
 " No sound on errors
 " set noerrorbells
 " set novisualbell
