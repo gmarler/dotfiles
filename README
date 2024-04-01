@@ -10,6 +10,7 @@ To use this on a new machine/in a new home directory:
 
 - To get tmux working:
 - ln -s dotfiles/tmux.conf ~/.tmux.conf
+  (If ~/.config/tmux/tmux.conf exist, you will need to delete it)
 
 - For NeoVim:
 - ln -s ~/dotfiles/.config/nvim ~/.config/nvim
