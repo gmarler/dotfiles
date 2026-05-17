@@ -170,11 +170,73 @@ alias ll.="ls $LS_OPTIONS -ld" # Usage: ll. ~/.*
 alias la="ls $LS_OPTIONS -la"
 alias lrt="ls $LS_OPTIONS -alrt"
 
+################### Utility Functions #######################################
+ensure_git_config() {
+  local key="${1}"
+  local value="${2}"
+
+  if ! command -v git &> /dev/null; then
+    echo "git not present, cannot set git config"
+  else
+    if ! git config --get "$key" > /dev/null 2>&1; then
+      echo "Setting git config $key to '$value'..."
+      git config --global "$key" "$value"
+    fi
+  fi
+}
+
+ensure_git_aliases() {
+  local key="${1}"
+  local value="${2}"
+
+  if ! command -v git &> /dev/null; then
+    echo "git not present, cannot set git aliases"
+  else
+    if ! git config --get "alias.${key}" > /dev/null 2>&1; then
+      echo "Setting git alias.${key} to '$value'..."
+      git config --global "alias.${key}" "$value"
+    fi
+  fi
+}
+#############################################################################
+
 # Useful aliases
 # Moved to a function: alias bot='cd $(dirname $(find . | tail -1))'
 #alias clip='xsel -b'         # pipe stuff into right "X" clipboard
 alias clr='cd ~/ && clear'          # Clear and return $HOME
 alias diff='diff -u'                # Make unified diffs the default
+#################################
+# git related BEGIN
+alias ga="git add"
+alias gc="git commit"
+alias gco="git checkout"
+alias gdiff="git diff"
+alias gl="git prettylog"
+alias glo="git log --oneline --graph --pretty=format:'%h %ad %s [%an]' --date=local"
+alias gp="git push"
+alias gs="git status"
+alias gt="git tag"
+# Git related configuration
+declare -A git_config git_alias
+git_config["user.name"]="Gordon Marler"
+git_config["credential.helper"]="store"
+git_config["credential.https://github.com.username"]="gmarler"
+git_config["push.default"]="tracking"
+git_config["init.defaultBranch"]="main"
+git_alias["ci"]="commit"
+git_alias["co"]="checkout"
+git_alias["prettylog"]="log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(r) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"
+git_alias["root"]="rev-parse --show-toplevel"
+for key in "${!git_config[@]}"; do
+  value="${git_config[$key]}"
+  ensure_git_config $key $value 
+done
+for key in "${!git_alias[@]}"; do
+  value="${git_alias[$key]}"
+  ensure_git_aliases $key $value
+done
+# git related END
+#################################
 alias hu='history -n && history -a' # Read new hist. lines; append current lines
 alias hr='hu'                       # "History update" backward compat to 'hr'
 alias lesss='less -S'               # Don't wrap lines
@@ -302,3 +364,11 @@ if [[ -f "$HOME/.bashrc.custom" ]]; then
 	echo "Sourcing Custom .bashrc.custom"
 	source $HOME/.bashrc.custom
 fi
+
+PATH="/home/gmarler/perl5/bin${PATH:+:${PATH}}"; export PATH;
+PERL5LIB="/home/gmarler/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/home/gmarler/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"/home/gmarler/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/home/gmarler/perl5"; export PERL_MM_OPT;
+
+export PATH="$HOME/.local/bin:$PATH"
