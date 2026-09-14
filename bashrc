@@ -102,6 +102,7 @@ case "$-" in
 	# If this is an xterm set the title to user@host:dir
 	case "$TERM" in
 	xterm* | rxvt*)
+    # TODO: This needs fixing so xterm/rxvt will look correct
     :
     # PROMPT_COMMAND='history -a; echo -ne "\033]0;${USER}@${HOSTNAME}:$PWD\007"'
 		;;
