@@ -136,6 +136,29 @@ _path_dedupe() { # keep only the first occurrence of each entry
 # has already run path_helper, on Solaris/Linux this is /etc/profile's PATH.
 _path_prepend "$HOME/bin" "$HOME/.local/bin"
 
+# Nix profiles installed from personal flakes, e.g. the nixvim build from
+# ~/gitwork/my-nixvim. Deliberately generic: every profile under the nix state
+# directory contributes its bin, so adding another flake output needs no edit
+# here. Honours XDG_STATE_HOME, which is where nix actually looks, rather than
+# hard-coding ~/.local/state.
+#
+# The -<N>-link entries must be skipped. Nix keeps each generation as
+# <name>-<N>-link and points <name> at the current one, so all of them carry a
+# bin/ -- a plain */bin glob would put every superseded build on PATH next to
+# the live one (there are three stale neovim generations sitting there today).
+# Adding <name> rather than its target also means the entry stays correct
+# across a rebuild, instead of pinning to one /nix/store hash.
+_nix_profile_dir="${XDG_STATE_HOME:-$HOME/.local/state}/nix/profiles"
+if [ -d "$_nix_profile_dir" ]; then
+	for _p in "$_nix_profile_dir"/*; do
+		case ${_p##*/} in
+		*-[0-9]*-link) continue ;; # a generation, not the current pointer
+		esac
+		_path_prepend "$_p/bin"
+	done
+fi
+unset _nix_profile_dir _p
+
 # --- PATH and environment, per OS ------------------------------------------
 case "$UNAME_S" in
 SunOS)

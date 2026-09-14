@@ -246,7 +246,11 @@ alias edit=$VISUAL          # Provide a command to use on all systems
 # emulation and settings, esp. ANSI color. But it shouldn't hurt to have.
 # See above notes re: nano for why we're using this for loop.
 for path in ${PATH//:/ }; do
-	[ -r "$path/dircolors" ] && eval "$(dircolors)" &&
+	# -b forces Bourne-shell syntax. Bare 'dircolors' guesses from $SHELL and
+	# warns 'no SHELL environment variable, and no shell type option given'
+	# whenever that is unset -- cron, containers, env -i. This only started
+	# mattering once coreutils was installed and the branch could actually run.
+	[ -r "$path/dircolors" ] && eval "$(dircolors -b)" &&
 		LS_OPTIONS='--color=auto' && break
 done
 # Fall back to BSD ls colouring when there is no GNU dircolors. On MacOS
