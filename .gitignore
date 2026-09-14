@@ -5,3 +5,5 @@ tags
 # Avoid editor temp files
 *.swp
 *.swo
+# MacOS Finder droppings
+.DS_Store

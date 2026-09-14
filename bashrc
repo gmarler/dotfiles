@@ -35,7 +35,12 @@
 # ---------------------------------------------------------------------------
 
 # Only if interactive bash with a terminal!
-[ -t 1 -a -n "$BASH_VERSION" ] || return
+# Written as an explicit if rather than [ p -a q ] || return: -a inside [ ] is
+# not well defined by POSIX and misparses when an operand looks like an
+# operator (shellcheck SC2166), and 'A && B || C' would invite SC2015.
+if [ ! -t 1 ] || [ -z "$BASH_VERSION" ]; then
+	return
+fi
 
 # Failsafe. This should be set when we're called, but if not, the "not found"
 # error messages should be pretty clear.
@@ -138,7 +143,16 @@ done
 : "${HISTFILESIZE:=500000}"
 export HISTSIZE HISTFILESIZE
 #export HISTCONTROL=ignoreboth # bash < 3, omit dups & lines starting with spaces
+# Note what erasedups does and does not do here: it drops older duplicates from
+# the IN-MEMORY list, which is what makes up-arrow within a session tidy. It
+# does not dedupe ~/.bash_history, because 'history -a' only ever appends the
+# new lines. Tested: the resulting file is byte-identical with and without
+# erasedups, so this is not worth 'fixing' by removing -- you would lose the
+# in-session tidiness and gain nothing.
 export HISTCONTROL='erasedups:ignoredups:ignorespace'
+# '[ ]*' is one space followed by anything, i.e. lines starting with a space --
+# which duplicates ignorespace above. '&' is the useful half: skip a line that
+# repeats the one before it.
 export HISTIGNORE='&:[ ]*' # bash >= 3, omit dups & lines starting with spaces
 #export HISTTIMEFORMAT='%Y-%m-%d_%H:%M:%S_%Z=' # bash >= 3, timestamp hist file
 shopt -s histappend      # Append rather than overwrite history on exit
@@ -200,8 +214,10 @@ fi
 # Globally replace the $PATH ':' delimiter with space for use in a list.
 for path in $SETTINGS ~/ ${PATH//:/ }; do
 	# Use first one found of 'lesspipe.sh' (preferred) or 'lesspipe' (Debian)
-	[ -x "$path/lesspipe.sh" ] && eval $("$path/lesspipe.sh") && break
-	[ -x "$path/lesspipe" ] && eval $("$path/lesspipe") && break
+	# Quoted: lesspipe prints LESSOPEN='||... %s' as a single assignment, and
+	# unquoted it word-splits on the spaces inside the value (SC2046).
+	[ -x "$path/lesspipe.sh" ] && eval "$("$path/lesspipe.sh")" && break
+	[ -x "$path/lesspipe" ] && eval "$("$path/lesspipe")" && break
 done
 
 # Set other less & editor prefs (overkill)
@@ -233,6 +249,12 @@ for path in ${PATH//:/ }; do
 	[ -r "$path/dircolors" ] && eval "$(dircolors)" &&
 		LS_OPTIONS='--color=auto' && break
 done
+# Fall back to BSD ls colouring when there is no GNU dircolors. On MacOS
+# without Homebrew coreutils installed, the loop above finds nothing, so
+# LS_OPTIONS stayed empty and ls had no colour at all; BSD ls spells it -G.
+if [ -z "$LS_OPTIONS" ] && [ "${UNAME_S}" = "Darwin" ]; then
+	LS_OPTIONS='-G'
+fi
 export LS_OPTIONS="$LS_OPTIONS -F -h"
 # Using dircolors may cause csh scripts to fail with an
 # "Unknown colorls variable 'do'." error.  The culprit is the ":do=01;35:"
@@ -291,7 +313,23 @@ alias glo="git log --oneline --graph --pretty=format:'%h %ad %s [%an]' --date=lo
 alias gp="git push"
 alias gs="git status"
 alias gt="git tag"
-# Git related configuration
+# Git related configuration.
+#
+# Guarded twice over:
+#
+#  * 'declare -A' is bash 4.0+. On Apple's /bin/bash 3.2, or an old Solaris
+#    bash, the unguarded version does not abort the file -- execution carries
+#    on and everything below still loads -- but it spews 'declare: -A: invalid
+#    option' plus an arithmetic syntax error per dotted key on EVERY shell
+#    start, and silently applies none of the settings. Keys without a dot are
+#    worse than noisy: 3.2 treats the subscript as arithmetic, so "co" and
+#    "ci" both evaluate to 0 and quietly overwrite each other.
+#
+#  * _GIT_CONFIG_ENSURED is exported, so this runs once per login rather than
+#    once per interactive shell. The loops spawn a 'git config --get' per
+#    entry, measured at ~250ms, which every tmux pane was paying to re-check
+#    settings that were already correct.
+if [ -z "$_GIT_CONFIG_ENSURED" ] && [ "${BASH_VERSINFO[0]:-0}" -ge 4 ]; then
 declare -A git_config git_alias
 git_config["user.name"]="Gordon Marler"
 git_config["credential.helper"]="store"
@@ -315,6 +353,9 @@ for key in "${!git_alias[@]}"; do
   value="${git_alias[$key]}"
   ensure_git_aliases "$key" "$value"
 done
+unset git_config git_alias key value
+export _GIT_CONFIG_ENSURED=1
+fi
 # git related END
 #################################
 alias hu='history -n && history -a' # Read new hist. lines; append current lines
@@ -404,12 +445,20 @@ if [[ "${UNAME_S}" == "Darwin" ]]; then
 	alias nodeproxy="cd ~/gitwork/nodeproxy &&\
    npx bb-nodeproxy -D \
    --proxyAddress 0.0.0.0 --proxyPort 8888"
-	# These require the GNU coreutils gnubin directory, which bash_profile puts
-	# on PATH ahead of the BSD tools.
-	# Date/time alias updates to use GNU coreutils gdate
-	alias iso8601="gdate '+%Y-%m-%dT%H:%M:%S%z'" # ISO 8601 time
-	alias now="gdate       '+%F %T %Z(%z)'"      # More readable ISO 8601 local
-	alias utc="gdate --utc '+%F %T %Z(%z)'"      # More readable ISO 8601 UTC
+	# Date/time aliases. These used to hard-code gdate, which only exists if
+	# Homebrew coreutils is installed -- it is not on every machine, and when
+	# it is missing all three aliases just fail with 'gdate: command not
+	# found'. Prefer gdate when present, otherwise use BSD date, which handles
+	# these same format strings; only the UTC flag differs (--utc vs -u).
+	if command -v gdate >/dev/null 2>&1; then
+		alias iso8601="gdate '+%Y-%m-%dT%H:%M:%S%z'" # ISO 8601 time
+		alias now="gdate       '+%F %T %Z(%z)'"      # Readable ISO 8601 local
+		alias utc="gdate --utc '+%F %T %Z(%z)'"      # Readable ISO 8601 UTC
+	else
+		alias iso8601="date '+%Y-%m-%dT%H:%M:%S%z'"
+		alias now="date    '+%F %T %Z(%z)'"
+		alias utc="date -u '+%F %T %Z(%z)'"
+	fi
 	# HomeBrew Bash completions, if present
 	if [[ -f "${HOMEBREW_PREFIX:-/opt/homebrew}/etc/bash_completion" ]]; then
 		. "${HOMEBREW_PREFIX:-/opt/homebrew}/etc/bash_completion"
