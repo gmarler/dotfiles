@@ -1,18 +1,19 @@
-# ~/dotfiles/bashrc -- per-interactive-shell bash configuration
+# ~/.bashrc -- per-interactive-shell Bash configuration
 #
 # MACOS: this assumes the shell is a current Homebrew bash
 # (/opt/homebrew/bin/bash on Apple silicon, /usr/local/bin/bash on Intel), NOT
 # Apple's /bin/bash, which is frozen at 3.2 from 2007 and never updated because
 # bash went GPLv3 in 4.0. See the longer note at the top of
-# ~/dotfiles/bash_profile for the brew install / chsh / tmux default-shell
+# ~/.bash_profile for the Homebrew Bash installation and shell startup
 # steps. 'echo $BASH_VERSION' starting with "3.2" means you are on Apple's.
 #
 # ---------------------------------------------------------------------------
-# WHAT BELONGS IN THIS FILE, AND WHAT BELONGS IN ~/dotfiles/bash_profile
+# WHAT BELONGS IN THIS FILE, AND WHAT BELONGS IN ~/.bash_profile
 # ---------------------------------------------------------------------------
 # This file is read once per interactive shell: every tmux pane, every nested
-# 'bash', every subshell. ~/dotfiles/bash_profile is read once per login and
-# sources this file at its end, so a login shell gets both.
+# 'bash', every subshell. A login shell reaches it from ~/.bash_profile. A
+# non-login shell first loads ~/.bash_profile when it has not inherited the
+# shared environment bootstrap.
 #
 # Put it HERE when it is:
 #   * a prompt, alias, shell function, completion, or key binding
@@ -21,17 +22,15 @@
 #   * an interactive preference exported for child programs (EDITOR, LESS,
 #     PAGER, CDPATH). Cheap to re-set, and harmless to re-set.
 #
-# Put it in ~/dotfiles/bash_profile instead when it is:
+# Put it in ~/.bash_profile instead when it is:
 #   * anything that changes PATH
 #   * a tool bootstrap that shells out or eval's -- brew shellenv, pyenv init,
 #     rvm, nvm, cargo -- because those are slow and only need to run per login
 #   * OS detection
 #   * history FILE sizing, HISTSIZE / HISTFILESIZE
 #
-# HARD RULE: do not modify PATH in this file. A login shell exports PATH to
-# every child, so a PATH edit here is re-applied at each nesting level (login
-# shell -> tmux pane -> subshell) and the entry accumulates. That is how
-# ~/.rvm/bin came to appear in PATH three times.
+# HARD RULE: do not modify PATH directly in this file. ~/.bash_profile owns
+# the idempotent shared bootstrap and this file invokes it only when necessary.
 # ---------------------------------------------------------------------------
 
 # Only if interactive bash with a terminal!
@@ -39,6 +38,14 @@
 # not well defined by POSIX and misparses when an operand looks like an
 # operator (shellcheck SC2166), and 'A && B || C' would invite SC2015.
 if [ ! -t 1 ] || [ -z "$BASH_VERSION" ]; then
+	return
+fi
+
+# Linux terminal emulators commonly start a non-login Bash. If this shell did
+# not inherit a ready environment, source the linked profile once; it will
+# source this file back after the bootstrap is complete.
+if [ -z "${_BASH_ENV_READY+x}" ] && [ -r "$HOME/.bash_profile" ]; then
+	. "$HOME/.bash_profile"
 	return
 fi
 
@@ -619,8 +626,6 @@ if [[ -f "$HOME/.bashrc.custom" ]]; then
 	source $HOME/.bashrc.custom
 fi
 
-# The perl5 local::lib block that local::lib appended here, and the
-# $HOME/.local/bin prepend that followed it, were moved to bash_profile during
-# the merge of upstream aab523e: both write to PATH, which this file must not
-# do, and the perl5 one had /home/gmarler hard-coded so it was wrong on MacOS.
-# If local::lib ever re-appends its block here, move it back over there.
+# The perl5 local::lib block and user-local executable paths belong in the
+# shared profile bootstrap, not here. Do not let installers append PATH edits
+# to this file; they would be Linux-specific and run in every interactive Bash.

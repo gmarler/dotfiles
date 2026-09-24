@@ -8,6 +8,23 @@ To use this on a new machine/in a new home directory:
 
 - Clone from github into ~, thus creating ~/dotfiles
 
+- For Bash, install both home-directory links:
+
+  - ln -s ~/dotfiles/bash_profile ~/.bash_profile
+  - ln -s ~/dotfiles/bashrc ~/.bashrc
+
+  `~/.bash_profile` owns the shared environment: PATH, tool bootstraps, OS
+  detection, and history-file sizing. It always sources `~/.bashrc` for the
+  interactive configuration. On Linux, a terminal emulator, tmux pane, or
+  nested Bash may instead start as non-login Bash and read only `~/.bashrc`;
+  that file loads the linked profile when its environment was not inherited.
+  An exported guard makes the shared bootstrap run once per process tree while
+  every interactive Bash still gets prompts, aliases, completions, and history
+  behaviour. Runtime startup files refer only to the links in `$HOME`.
+
+  On macOS, keep the current Homebrew Bash as the login shell. tmux leaves its
+  default command unset, so it uses that configured login shell.
+
 - To get tmux working:
 - ln -s dotfiles/tmux.conf ~/.tmux.conf
   (If ~/.config/tmux/tmux.conf exist, you will need to delete it)
